@@ -1,0 +1,31 @@
+{% for i in products %}
+                <!--
+                -->
+                <!-- style="background:{% if not i.isactive %}#f3d6d694;{% endif %}" -->
+                <tr 
+                
+                data-product-id="{{ i.id }}" class="product-row ">
+                    <td style="padding: 5px; font-weight: bold;" class="pe-2">
+                        <img src="{% if i.image %}{{i.image.url}}{% endif %}" style="width: 55%;" alt="">
+                    </td>
+                    <td style="padding: 5px; font-weight: bold;">
+                      {{i.ref.upper}}
+                  </td>
+                  <td style="padding: 5px; font-weight: bold;">
+                    {{i.name.upper}}
+                </td>
+                <td style="padding: 5px; font-weight: bold;" class="text-center text-danger stock">
+                  {{i.stocktotalfirstcompany}} ({{i.frsellprice}}DH)
+              </td>
+                <td style="padding: 5px; font-weight: bold;" class="text-center text-danger stock">
+                  {{i.stocktotalsecondcompany}} ({{i.sellprice}}DH)
+              </td>
+                
+                    
+                    
+                    <td style="padding: 5px; font-weight: bold;">
+                      {{i.mark.name}}
+                  </td>
+                  
+                </tr>
+              {% endfor %}

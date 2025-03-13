@@ -1,0 +1,54 @@
+{% for i in products %}
+                <!--
+                -->
+                <!-- style="background:{% if not i.isactive %}#f3d6d694;{% endif %}" -->
+                <tr ondblclick="ajaxpage('addpdct{{i.id}}', 'Produit {{i.ref}}', '/products/viewoneproduct/{{i.id}}?target={{target}}')"
+                
+                data-product-id="{{ i.id }}" class="product-row ">
+                    <td style="padding: 5px; font-weight: bold;" class="pe-2">
+                        {{i.ref.upper}}
+                    </td>
+                    <td style="padding: 5px; font-weight: bold;">
+                        {{i.name}}
+                    </td>
+
+                    <td style="padding: 5px; font-weight: bold;" class="text-center prachat">
+                      {%if isfirstcompany%}{{i.frbuyprice}}{%else%}{{i.buyprice}}{%endif%}
+                    </td>
+                    <td style="padding: 5px; font-weight: bold;" class="text-center">
+                      {%if isfirstcompany%}{{i.frremise1}}{%else%}{{i.remise1}}{%endif%}
+                    </td>
+                    <td style="padding: 5px; font-weight: bold; font-size: 14px; color: var(--orange);" class="text-center">
+                      {%if isfirstcompany%}{{i.frsellprice}}{%else%}{{i.sellprice}}{%endif%}
+                    </td>
+                    <td style="padding: 5px; font-weight: bold;" class="text-center">
+                      {%if isfirstcompany%}{{i.frremisesell}}{%else%}{{i.remisesell}}{%endif%}
+                    </td>
+                    <td style="padding: 5px; font-weight: bold;" class="text-center text-danger stock">
+                        {% if isfirstcompany %} {{i.stocktotalfirstcompany}} {% else %} {{i.stocktotalsecondcompany}} {% endif %}
+                    </td>
+                    
+
+                    
+                    <td style="padding: 5px; font-weight: bold;" class="text-success">
+                      {{i.block}}
+                  </td>
+                  
+                  <!-- <td style="padding: 5px; font-weight: bold;" class="text-danger">
+                    {%if i.coutmoyen%}{{i.coutmoyen}}{%endif%}
+                </td> -->
+                   
+                    <td style="padding: 5px; font-weight: bold;">
+                      {{i.mark.name}}
+                  </td>
+                  
+
+
+                <!-- <td style="padding: 5px; font-weight: bold;" class="text-danger">
+                  <span class="percentage">
+                    {{i.getpercentage|floatformat:2}}
+                  </span>
+                </td> -->
+
+                </tr>
+              {% endfor %}
