@@ -800,7 +800,7 @@ def searchref(request):
     })
 
 def addsupply(request):
-    user=request.user
+    #user=request.user
     supplierid=request.POST.get('supplierid')
     mantant=json.loads(request.POST.get('mantant'))
     moderegl=json.loads(request.POST.get('moderegl'))
@@ -829,7 +829,7 @@ def addsupply(request):
     # if isfacture:
     #     print('>> creating facture')
     #     facture=Factureachat.objects.create(
-    #         user=user,
+    #    <      vuser,
     #         facture_no=nbon,
     #         supplier_id=supplierid,
     #         isfirstcompany=isfirstcompany,
@@ -841,7 +841,7 @@ def addsupply(request):
     #     
     # 
     bon=Itemsbysupplier.objects.create(
-        user=user,
+        #user=user,
         isfirstcompany=True if target=='f' else False,
         issecondcompany=True if target=='o' else False,
         supplier_id=supplierid,
@@ -1149,30 +1149,17 @@ def addbonlivraison(request):
     isfirstcompany=target=='f'
     issecondcompany=target=='o'
     print('isfirstcompany, target', isfirstcompany, target)
-    if isfirstcompany:
-        latest_receipt = Bonlivraison.objects.filter(
-            bon_no__startswith=f'FR-BL{year}'
-        ).last()
-        # latest_receipt = Bonsortie.objects.filter(
-        #     bon_no__startswith=f'FR-BL{year}'
-        # ).order_by("-bon_no").first()
-        if latest_receipt:
-            latest_receipt_no = int(latest_receipt.bon_no[-9:])
-            receipt_no = f"FR-BL{year}{latest_receipt_no + 1:09}"
-        else:
-            receipt_no = f"FR-BL{year}000000001"
+    latest_receipt = Bonlivraison.objects.filter(
+        bon_no__startswith=f'BL{year}'
+    ).last()
+    # latest_receipt = Bonsortie.objects.filter(
+    #     bon_no__startswith=f'BL{year}'
+    # ).order_by("-bon_no").first()
+    if latest_receipt:
+        latest_receipt_no = int(latest_receipt.bon_no[-9:])
+        receipt_no = f"BL{year}{latest_receipt_no + 1:09}"
     else:
-        latest_receipt = Bonlivraison.objects.filter(
-            bon_no__startswith=f'BL{year}'
-        ).last()
-        # latest_receipt = Bonsortie.objects.filter(
-        #     bon_no__startswith=f'BL{year}'
-        # ).order_by("-bon_no").first()
-        if latest_receipt:
-            latest_receipt_no = int(latest_receipt.bon_no[-9:])
-            receipt_no = f"BL{year}{latest_receipt_no + 1:09}"
-        else:
-            receipt_no = f"BL{year}000000001"
+        receipt_no = f"BL{year}000000001"
     order=Bonlivraison.objects.create(
         command_id=comndid,
         devi_id=devid,
@@ -1185,7 +1172,7 @@ def addbonlivraison(request):
         note=note,
         isfirstcompany=isfirstcompany,
         issecondcompany=issecondcompany,
-        user=request.user
+        #user=request.user
     )
     if not comndid == "":
         cmnd=Command.objects.get(pk=comndid)
