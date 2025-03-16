@@ -38,7 +38,7 @@ def get_local_ip():
         s.close()
     return ip
 ip=get_local_ip()
-ALLOWED_HOSTS = [ip]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
