@@ -21,13 +21,15 @@ def get_local_ip():
 # Function to run the Django server using Waitress
 def runserver():
     ip = get_local_ip()  # Get the dynamic IP address
-    os.system(f'waitress-serve --host={ip} --port=80 alhyan.wsgi:application')
+    #os.system(f'waitress-serve --host={ip} --port=80 alhyan.wsgi:application')
+    os.system('py manage.py runserver 80')
 
 # Function to launch Chrome with the dynamically obtained IP address
 def lunchchrome():
     sleep(2)  # Ensure the server is up and running
     ip = get_local_ip()  # Get the dynamic IP address
-    os.system(f'start chrome http://{ip}')
+    os.system(f'start chrome http://localhost')
+    # os.system(f'start chrome http://{ip}')
 
 # Create threads for running the server and launching Chrome
 t1 = Thread(target=runserver)
