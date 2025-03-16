@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from os.path import join
+import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +26,19 @@ SECRET_KEY = 'django-insecure-gc(kv5(@c&#xou7s6l=4upw26f^+r-#b8z$cy_arxg_e0x!1%1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0)
+    try:
+        s.connect(('10.254.254.254', 1))  # Attempt to connect to a non-local address
+        ip = s.getsockname()[0]
+    except Exception:
+        ip = '127.0.0.1'  # fallback to localhost if no external IP is found
+    finally:
+        s.close()
+    return ip
+ip=get_local_ip()
+ALLOWED_HOSTS = [ip]
 
 
 # Application definition
