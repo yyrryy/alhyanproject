@@ -1986,7 +1986,7 @@ def getclientprice(request):
     #     producthistory=Livraisonitem.objects.filter(client_id=clientid, product_id=pdctid, isfirstcompany=True)
     else:
         print('>> firstcompany clientprice', clientid, pdctid, isfirstcompany)
-        producthistory=Livraisonitem.objects.filter(client_id=clientid, product_id=pdctid)
+        producthistory=Livraisonitem.objects.filter(bon__client_id=clientid, product_id=pdctid)
     print('producthistory', producthistory)
     clientprice=producthistory.last()
     if clientprice:
