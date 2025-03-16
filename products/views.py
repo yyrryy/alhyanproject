@@ -3054,21 +3054,21 @@ def getclientbons(request):
     # elif target=="f":
     print('>>> mode regl', moderegl)
     if moderegl=='bl':
-        bons=Bonlivraison.objects.filter(ispaid=False, client_id=clientid, date__range=[datefrom, dateend], isfirstcompany=isfirstcompany, iscanceled=False, isfacture=False).order_by('date')
+        bons=Bonlivraison.objects.filter(ispaid=False, client_id=clientid, date__range=[datefrom, dateend], iscanceled=False, isfacture=False).order_by('date')
         #[:50]
         for i in bons:
             # old code, if reglement is paid it's checked from here
             # trs+=f'<tr style="background: {"rgb(221, 250, 237);" if i.reglements.exists() else ""}" class="blreglrow" clientid="{clientid}"><td>{i.date.strftime("%d/%m/%Y")}</td><td>{i.bon_no}</td><td>{i.client.name}</td><td>{i.total}</td><td class="text-danger">{"RR" if i.reglements.exists() else "NR"}</td> <td><input type="checkbox" value="{i.id}" name="bonstopay" onchange="checkreglementbox(event)" {"checked" if i.reglements.exists() else ""}></td></tr>'
             trs+=f'<tr class="blreglrow" clientid="{clientid}"><td>{i.date.strftime("%d/%m/%Y")}</td><td>{i.bon_no}</td><td>{i.total}</td> <td><input type="checkbox" value="{i.id}" name="bonstopay" total={i.total} onchange="checkreglementbox(event)"></td></tr>'
     else:
-        bons=Facture.objects.filter(client_id=clientid, date__range=[datefrom, dateend], isfirstcompany=isfirstcompany, ispaid=False).order_by('date')
+        bons=Facture.objects.filter(client_id=clientid, date__range=[datefrom, dateend], ispaid=False).order_by('date')
         for i in bons:
             # old code, if reglement is paid it's checked from here
             # trs+=f'<tr style="background: {"rgb(221, 250, 237);" if i.reglements.exists() else ""}" class="blreglrow" clientid="{clientid}"><td>{i.date.strftime("%d/%m/%Y")}</td><td>{i.bon_no}</td><td>{i.client.name}</td><td>{i.total}</td><td class="text-danger">{"RR" if i.reglements.exists() else "NR"}</td> <td><input type="checkbox" value="{i.id}" name="bonstopay" total={i.total} onchange="checkreglementbox(event)" {"checked" if i.reglements.exists() else ""}></td></tr>'
             trs+=f'<tr class="blreglrow" clientid="{clientid}"><td>{i.date.strftime("%d/%m/%Y")}</td><td>{i.facture_no} </td><td>{i.total}</td><td><input type="checkbox" value="{i.id}" name="bonstopay" total={i.total} onchange="checkreglementbox(event)"></td></tr>'
     #total=round(Bonlivraison.objects.filter(ispaid=False, client_id=clientid).aggregate(Sum('total')).get('total__sum')or 0,  2)
-    avoir=Avoirclient.objects.filter(client_id=clientid, date__range=[datefrom, dateend], isfirstcompany=isfirstcompany, inreglement=False, ispaid=False).order_by('date')
-    avance=Avanceclient.objects.filter(client_id=clientid, date__range=[datefrom, dateend], isfirstcompany=isfirstcompany, inreglement=False).order_by('date')
+    avoir=Avoirclient.objects.filter(client_id=clientid, date__range=[datefrom, dateend], inreglement=False, ispaid=False).order_by('date')
+    avance=Avanceclient.objects.filter(client_id=clientid, date__range=[datefrom, dateend], inreglement=False).order_by('date')
 
     # else:
     #     if moderegl=='bl':
