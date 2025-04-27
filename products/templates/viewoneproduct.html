@@ -1,4 +1,41 @@
 {% load global_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Example</title>
+    <style>
+      @media print {
+         .livraison-holder {
+             height: 27.5cm; /* Slightly less than the maximum printable height */
+             width: 21cm; /* Full width of A4 */
+             border: 1px solid black; /* For debugging and visibility */
+             page-break-after: always; /* Ensures each div starts on a new page */
+             box-sizing: border-box; /* Include padding and border in the element's total width and height */
+         }
+
+         /* Reset margins and paddings for printing */
+         body {
+             margin: 0;
+             padding: 0;
+         }
+         td > div{
+           margin:4px;
+         }
+
+         /* Optional: If you need to adjust margins more precisely */
+         @page {
+             margin: 0; /* Remove any default margins */
+         }
+     }
+    </style>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquerySpellingNumber.js"></script>
+    <link href="/static/css/minified.css" rel="stylesheet" />
+</head>
+<body>
 <style>
     /* The switch - the box around the slider */
 .switch {
@@ -170,37 +207,37 @@
                             <tr>
                                 {% if target == "f" %}
                                 <td>
-                                    Stock
+                                    Stock Farah
                                 </td>
                                 <td class="stocktotal{{product.id}} d-flex">
                                     
-                                    {{product.stocktotalfirstcompany}}
+                                    {{product.stocktotalfarah}}
                                     
                                 </td>
                                 {% elif target == 'o' %}
                                 <td>
-                                    Stock secondcompany
+                                    Stock Orgh
                                 </td>
                                 <td class="stocktotal{{product.id}} d-flex">
                                     
-                                    {{product.stocktotalsecondcompany}}
+                                    {{product.stocktotalorgh}}
                                     
                                 </td>
                                 {% else %}
                                 <td>
-                                    Stock firstcompany
+                                    Stock farah
                                 </td>
                                 <td class="stocktotal{{product.id}} d-flex">
                                     
-                                    {{product.stocktotalfirstcompany}}
+                                    {{product.stocktotalfarah}}
                                     
                                 </td>
                                 <td>
-                                    Stock secondcompany
+                                    Stock orgh
                                 </td>
                                 <td class="stocktotal{{product.id}} d-flex">
                                     
-                                    {{product.stocktotalsecondcompany}}
+                                    {{product.stocktotalorgh}}
                                     
                                 </td>
                                 {% endif %}
@@ -389,12 +426,12 @@
                                 
                                 <div class="col-3">
                                     <small>Remise</small>
-                                    <input type="text" class="form-control mb-3" name="remise" value="{%if isfirstcompany%}{{product.frremisesell}}{%else%}{{product.remisesell}}{%endif%}">
+                                    <input type="text" class="form-control mb-3" name="remise" value="{%if isfarah%}{{product.frremisesell}}{%else%}{{product.remisesell}}{%endif%}">
                                 </div>
 
                                 <div class="col-3">
                                     <small for="name">Prix vente brut</small>
-                                    <input type="text" class="form-control mb-3"name="sellprice" value="{%if isfirstcompany%}{{product.frsellprice}}{%else%}{{product.sellprice}}{%endif%}">
+                                    <input type="text" class="form-control mb-3"name="sellprice" value="{%if isfarah%}{{product.frsellprice}}{%else%}{{product.sellprice}}{%endif%}">
                                 </div>
                                 <div class="col-3">
                                     <small for="name">block</small>
@@ -593,8 +630,8 @@
                             <td>01/01/2024</td>
                             <td>inventaire 2023</td>
                             <td>stock inital</td>
-                            <td>{%if isfirstcompany%}{{product.frstockinitial}}{%else%}{{product.stockinitial}}{%endif%}</td>
-                            <td>{%if isfirstcompany%}{{product.frpriceinitial|floatformat:2}}{%else%}{{product.priceinitial|floatformat:2}}{%endif%}</td>
+                            <td>{%if isfarah%}{{product.frstockinitial}}{%else%}{{product.stockinitial}}{%endif%}</td>
+                            <td>{%if isfarah%}{{product.frpriceinitial|floatformat:2}}{%else%}{{product.priceinitial|floatformat:2}}{%endif%}</td>
                           </tr> -->
                           {% for entry in product.stockin_set.all %}
                           {% endfor %}
@@ -635,7 +672,7 @@
                                     {{i.avoir.client.name}}
                                 </td>
                                 <td>
-                                    {{i.qty}}
+                                    {{i.quantity}}
                                 </td>
                                 <td>
                                     {{i.price}}
@@ -816,10 +853,34 @@
     </div>
 </div>
 
-
-
-{% block js %}
+<script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'js/select2.min.js'%}"></script>
+    <script src="{% static 'js/type.min.js'%}"></script>
+    <script src="{% static 'js/number.js'%}"></script>
+    <script src="{% static 'js/main.js'%}"></script>
+    <script src="{% static 'js/alertify.min.js'%}"></script>
 <script>
+    function duplicate(event, productid){
+        var parent=$(event.target).parent();
+        ref=parent.find('.ref').val();
+        mark=parent.find('.mark').val();
+        minstock=parent.find('.minstock').val();
+        if (ref=='' || mark==''){
+          alertify.error('Veuillez remplir tous les champs');
+          return;
+        }
+        $.get('/products/duplicate', {'productid':productid, 'ref':ref, 'mark':mark, 'minstock':minstock}, function(data){
+          if(data.success){
+            alertify.success('Produit dupliqué');
+            parent.find('.ref').val('');
+            parent.find('.mark').val('');
+            parent.find('.minstock').val('');
+          }else{
+            alertify.error(data.message);
+          }
+        })
+      }
+      
     function replaceproduct(){
         productid=$('.refreplace').val()
         if (productid==null){
@@ -827,7 +888,7 @@
             return
         }
         alertify.prompt( 'Confirmer', 'Mot de pass', '****', function(evt, value) { 
-          if (value=='secondcompanyAD'){
+          if (value=='ORGHAD'){
             $.get('/products/replaceproduct', {'replacewith':productid, 'producttoreplace':'{{product.id}}'}, (data)=>{
                 ajaxpage('addpdct2', 'Produit zzg', '/products/viewoneproduct/'+productid+'?target={{target}}')
             })
@@ -907,6 +968,7 @@
             contentType: false,
             success:((data)=>{
                 if(data.success){
+                    window.close()
                     alertify.success('Modifier');
 
                     ajaxpage('addpducts', 'Articles', '/products/stock?target={{target}}')
@@ -919,4 +981,4 @@
     }
 
 </script>
-{% endblock %}
+</body>

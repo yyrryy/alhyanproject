@@ -36,7 +36,12 @@
 <div class="bg-white shadow rounded p-2 rounded">
   <div class="text-white rounded h3 d-flex align-items-center justify-content-between bg-darkblue">
     <!-- <button class="btn bg-orange" style="border:1px solid var(--orange);" onclick="deletetab('addlistfactures')">x</button> -->
-    
+    <!-- <div>
+      <button class="btn border btnselect btn-dark active" style="
+      border-radius: 11px;" onclick="ajaxpage('addlistbonlivraison', 'tt', '/products/listfactures?target={{target}}')">En attend</button>
+      <button class="btn border btnselect btn-dark" style="
+      border-radius: 11px;" onclick="$('.btnselect').removeClass('active'); $(this).addClass('active'); getfacturevalider()">Validé</button>
+    </div> -->
     <div>
       {{title}}
     </div>
@@ -58,13 +63,13 @@
             <div class="row">
 
                 <div class="d-flex justify-content-between">
-                    <div class="">
+                    <!-- <div class="">
                         <small>Date:</small> <br>
                         <input type="date" name="datereglementclientbl" class="w-100 notempty datereglement mb-2" value="{{today|date:'Y-m-d'}}" onchange="checkyearreglbl(event)">
                         <small class="errordatereglclbl text-danger d-none">
                           Date incorrect
                         </small>
-                    </div>
+                    </div> -->
                     <!-- <button type="button" name="button" class="btn bg-darkblue text-white" onclick="refreshselectclient(event)">↻</button> -->
                     <div class="col-3">
                       <select name="addreglementclientsbl" id="" class="form-select addreglementclientsbl select2client" style="width:100%;">
@@ -166,11 +171,14 @@
           </div>
           <div>
             <button class="btn btn-sm bg-dark text-white filterfcdate">Filtrer</button>
+            <button class="btn btn-success bi bi-download" onclick="exportfc(event)">
+          
+            </button>
           </div>
 
         </div>
-      <input style="width:20em; border-radius: 10px;" type="text" name="" id="" placeholder="Recherche" class="searchinputlistfactures mt-2">
-
+      <input style="width:20em; border-radius: 10px;" type="text" name="" id="" placeholder="Recherche" class="searchinputlistfactures mt-2" waiting="1">
+        <!-- waiting means the search is in waiting list -->
       </div>
 
       <div class="d-flex flex-column">
@@ -178,9 +186,7 @@
 
 
         </select>
-        <!-- <button class="btn btn-success bi bi-download" onclick="exportfc(event)">
-          
-        </button> -->
+        
       </div>
       <!-- <div style="color: red; cursor: pointer; padding: 7px; border-radius: 12px; height: 2.5em; width: 4em;" title="BON 3 MOIS" class="bg-white text-center" onclick="getnotpaidfc(event)">
         {{depasserfc}}
@@ -345,10 +351,14 @@
 
 
 <script>
+  currentPagelistfc=1
+  loadinglistfc = false;
   function getfacturevalider(){
+    $('.searchinputlistfactures').attr('waiting', '0')
     $('.listfcbody').addClass('blurred')
     $.get('/products/getfacturevalider?target={{target}}', (data)=>{
       $('.listfcbody').html(data.html)
+      $('.totalfc').html(data.total)
       $('.listfcbody').removeClass('blurred')
     })
   }
@@ -497,8 +507,15 @@
     )
   }
   function exportfc(event){
+    startdatelistfc=$('.startdatelistfc').val()
+    enddatelistfc=$('.enddatelistfc').val()
     let year=$('.populateyears').val()
-    let url = `/products/exportfc?year=${year}&target={{target}}`;
+    if (startdatelistfc==''||enddatelistfc==''){
+      alertify.error('Date')
+      return
+    }
+    console.log('date', startdatelistfc, enddatelistfc)
+    let url = `/products/exportfc?year=${year}&target={{target}}&startdate=${startdatelistfc}&enddate=${enddatelistfc}`;
 
     // Create a hidden iframe to trigger the file download
     var iframe = $('<iframe>', {
@@ -528,7 +545,8 @@
   function loadMorelistfc (year, startdate, enddate, term, comptable, mode)  {
     console.log('term and page ubr', term, currentPagelistfc)
     loadinglistfc = true;
-    $.get(`/products/loadlistfc/?target={{target}}&page=${currentPagelistfc}&year=${year}&startdate=${startdate}&enddate=${enddate}&term=${term}&comptable=${comptable}&mode=${mode}&target={{target}}`, (data)=>{
+    waiting=$('.searchinputlistfactures').attr('waiting')
+    $.get(`/products/loadlistfc/?target={{target}}&page=${currentPagelistfc}&year=${year}&startdate=${startdate}&enddate=${enddate}&term=${term}&comptable=${comptable}&mode=${waiting}&target={{target}}`, (data)=>{
 
       const tbody = $('.listfctable tbody');
       tbody.append(data.trs);
@@ -558,7 +576,7 @@
       let mode=lastRow.getAttribute('mode')
       let startdate=$('.startdatelistfc').val()==""?0:$('.startdatelistfc').val()
       let enddate=$('.enddatelistfc').val()==""?0:$('.enddatelistfc').val()
-      let term=lastRow.getAttribute('term')?lastRow.getAttribute('term'):0
+      let term=$('.searchinputlistfactures').val()
       let comptable=lastRow.getAttribute('comptable')?lastRow.getAttribute('comptable'):0
       const containerBottom = container.scrollTop + container.clientHeight;
       if (containerBottom+900 >= lastRowOffset && !loadinglistfc) {
@@ -640,11 +658,12 @@ $('.filterfcdate').on('click', function(){
       alertify.error('Date')
       return
     }
-    $.get('/products/filterfcdate', {startdate:startdate, enddate:enddate},(data)=>{
+    waiting=$('.searchinputlistfactures').attr('waiting')
+    $.get('/products/filterfcdate', {startdate:startdate, enddate:enddate, 'target':'{{target}}', 'waiting':waiting},(data)=>{
       console.log(data)
       parentdiv.find('tbody').html(data.trs)
-      parentdiv.find('.totalfc').text(data.total)
-      parentdiv.find('.totalfctva').text(data.totaltva)
+      $('.totalfc').text(data.total)
+      $('.totalfctva').text(data.totaltva)
     })
   })
 $('.searchinputlistfactures').on("change", function() {
@@ -660,7 +679,8 @@ $('.searchinputlistfactures').on("change", function() {
 
     }
     else{
-    $.get('/products/searchforlistfc', {'term':filterValue.trim(), 'year':year, 'startdate':$('.startdatelistfc').val(), 'enddate':$('.enddatelistfc').val(), 'target':'{{target}}'}, (data)=>{
+    waiting=$('.searchinputlistfactures').attr('waiting')
+    $.get('/products/searchforlistfc', {'term':filterValue.trim(), 'year':year, 'startdate':$('.startdatelistfc').val(), 'enddate':$('.enddatelistfc').val(), 'target':'{{target}}', 'waiting':waiting}, (data)=>{
       $(".facturestable tbody").html('')
       $(".facturestable tbody").html(data.trs)
       $('.totalfc').text(data.total)

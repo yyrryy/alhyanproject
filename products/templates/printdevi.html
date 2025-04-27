@@ -56,7 +56,7 @@
         <div class="d-flex justify-content-between">
           <div style="border: 1px solid; padding: 5px; border-radius: 10px;">
             Date: <strong>{{order.date|date:"d/m/Y"}}</strong><br>
-            Bon N°:<strong>{{order.bon_no}}</strong><br>
+            Devi N°:<strong>{{order.bon_no}}</strong><br>
           
             page: {{forloop.counter}}/{{orderitems|length}}<br>
           
@@ -74,7 +74,7 @@
                {% if order.client.ice %}{{order.client.ice}} {% endif %}
             </strong><br>
             Address: <strong>{{client.address}} {{order.client.city}}</strong><br>
-            Note: <strong>{{order.notebon.upper}}</strong>
+            Note: <strong>{{order.note.upper}}</strong>
         </div>
         
         </div>
@@ -213,7 +213,7 @@
                {% if order.client.ice %}{{order.client.ice}} {% endif %}
             </strong><br>
             Address: <strong>{{client.address}} {{order.client.city}}</strong><br>
-            Note: <strong>{{order.notebon.upper}}</strong>
+            Note: <strong>{{order.note.upper}}</strong>
         </div>
         
         </div>

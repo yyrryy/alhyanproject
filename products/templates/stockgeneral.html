@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock general {% if target == "f" %}firstcompany{%else%} secondcompany {%endif%}</title>
+    <title>Stock general {% if target == "f" %}Farah{%else%} Orgh {%endif%}</title>
     <link href="/static/css/minified.css" rel="stylesheet" />
 
 </head>
 <body class="p-5" style="font-family: sans-serif;">
-    <h4>Stock general {% if target == "f" %}firstcompany{%else%} secondcompany {%endif%}</h4>
+    <h4>Stock general {% if target == "f" %}Farah{%else%} Orgh {%endif%}</h4>
     <strong class="text-danger">{{errorref}}</strong>
     <table class="table table-bordered table-hover">
         <thead>
@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{product.ref.upper}}</td>
                     <td>{{product.name.upper}}</td>
-                    <!-- <td>{% if target == "f" %}{{product.stocktotalfirstcompany}}{%else%} {{product.stocktotalsecondcompany}} {%endif%}</td> -->
+                    <!-- <td>{% if target == "f" %}{{product.stocktotalfarah}}{%else%} {{product.stocktotalorgh}} {%endif%}</td> -->
                     <td>{{product.stock}}</td>
                     <td>{{product.coutmoyen}}</td>
                     <td>{{product.totalstock}}</td>

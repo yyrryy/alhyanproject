@@ -279,7 +279,7 @@
         console.log('ids from validerbulk:', ids);
         ids = JSON.stringify(ids);
         alertify.prompt( 'Confirmer', 'Mot de pass', 'Prompt Value'
-               , function(evt, value) { if (value=='secondcompanyAD'){
+               , function(evt, value) { if (value=='ORGHAD'){
                 $('.validerbulk').addClass('disabled')
                   $.get('/products/validerbulk', { ids: ids }, function(data) {
                     console.log('Réponse du serveur:', data);
@@ -300,7 +300,7 @@
                , function() { alertify.error('Cancel') });
         // alertify.prompt('Confirmer', 'Mot de passe', '', function(evt, value) {
         //     console.log(value);
-        //     if (value === 'secondcompanyAD') {
+        //     if (value === 'ORGHAD') {
         //         console.log('Validation en cours...');
         //         $.get('/products/validerbulk', { ids: ids }, function(data) {
         //             console.log('Réponse du serveur:', data);

@@ -117,10 +117,11 @@
                 <!--
                 -->
                 <!-- style="background:{% if not i.isactive %}#f3d6d694;{% endif %}" -->
-                <tr ondblclick="ajaxpage('addpdct{{i.id}}', 'Produit {{i.ref}}', '/products/viewoneproduct/{{i.id}}?target={{target}}')"
+                <tr ondblclick="openwindow('addpdct{{i.id}}', 'Produit {{i.ref}}', '/products/viewoneproduct/{{i.id}}?target={{target}}')"
                 
                 data-product-id="{{ i.id }}" class="product-row ">
-                    <td style="padding: 5px; font-weight: bold;" class="pe-2">
+                    <td style="padding: 5px; font-weight: bold;" class="d-flex">
+                      <!-- <button class="btn btn-sm bi bi-eye"></button> -->
                         {{i.ref.upper}}
                     </td>
                     <td style="padding: 5px; font-weight: bold;">
@@ -128,19 +129,19 @@
                     </td>
 
                     <td style="padding: 5px; font-weight: bold;" class="text-center prachat">
-                      {%if isfirstcompany%}{{i.frbuyprice}}{%else%}{{i.buyprice}}{%endif%}
+                      {%if isfarah%}{{i.frbuyprice}}{%else%}{{i.buyprice}}{%endif%}
                     </td>
                     <td style="padding: 5px; font-weight: bold;" class="text-center">
-                      {%if isfirstcompany%}{{i.frremise1}}{%else%}{{i.remise1}}{%endif%}
+                      {%if isfarah%}{{i.frremise1}}{%else%}{{i.remise1}}{%endif%}
                     </td>
                     <td style="padding: 5px; font-weight: bold; font-size: 14px; color: var(--orange);" class="text-center">
-                      {%if isfirstcompany%}{{i.frsellprice}}{%else%}{{i.sellprice}}{%endif%}
+                      {%if isfarah%}{{i.frsellprice}}{%else%}{{i.sellprice}}{%endif%}
                     </td>
                     <td style="padding: 5px; font-weight: bold;" class="text-center">
-                      {%if isfirstcompany%}{{i.frremisesell}}{%else%}{{i.remisesell}}{%endif%}
+                      {%if isfarah%}{{i.frremisesell}}{%else%}{{i.remisesell}}{%endif%}
                     </td>
                     <td style="padding: 5px; font-weight: bold;" class="text-center text-danger stock">
-                        {% if isfirstcompany %} {{i.stocktotalfirstcompany}} {% else %} {{i.stocktotalsecondcompany}} {% endif %}
+                        {% if isfarah %} {{i.stocktotalfarah}} {% else %} {{i.stocktotalorgh}} {% endif %}
                     </td>
                     
 
@@ -161,7 +162,7 @@
 
                 <!-- <td style="padding: 5px; font-weight: bold;" class="text-danger">
                   <span class="percentage">
-                    {% if isfirstcompany %}
+                    {% if isfarah %}
                     {{i.frgetpercentage|floatformat:2}}
                     {% else %}
                     {{i.getpercentage|floatformat:2}}
@@ -332,7 +333,7 @@
       // Make an AJAX request to send the file data
         //$('.loadingscreen').removeClass('d-none')
         alertify.prompt( 'Confirmer', 'Mot de pass', '*****', function(evt, value) { 
-          if (value=='secondcompanyAD'){
+          if (value=='ORGHAD'){
             $.ajax({
               url: '/products/excelqtypdcts', // to get products to databese
               //url: '/products/updatestockinv', // Replace with your server endpoint

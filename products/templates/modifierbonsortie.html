@@ -97,7 +97,7 @@
                 <input type="number" class="form-control" placeholder="Remise" name="addremise">
               </div>
               <div class="col-3">
-                <button class="btn addrowbtn valider" firstcompany="0" onclick="addrowbonsortie(event)" style="border: 4px solid;
+                <button class="btn addrowbtn valider" farah="0" onclick="addrowbonsortie(event)" style="border: 4px solid;
                 border-color: var(--darkblue);
                 border-radius: 10px;
                 height: 36px;
@@ -163,10 +163,10 @@
               </tfoot> -->
               <tbody class="bonsortiebody">
                 {% for i in items %}
-                <tr class="itemrow" productid={{i.product.id}} firstcompany={%if i.isfirstcompany%}1{%else%}0{%endif%}>
+                <tr class="itemrow" productid={{i.product.id}} farah={%if i.isfarah%}1{%else%}0{%endif%}>
                   <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, {{i.product.id}})">{{i.ref}}</td>
                   <td style="padding: 2px 0; font-size: 13px;" class="name text-start">{{i.name}}</td>
-                  <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event); checkmax(event)" max="{%if i.isfirstcompany%}{{i.product.stocktotalfirstcompany}}{%else%}{{i.product.stocktotalsecondcompany}}{%endif%}" name="qty" value="{{i.qty}}" style="height:23px; width:100%;"></td>
+                  <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event); checkmax(event)" max="{%if i.isfarah%}{{i.product.stocktotalfarah}}{%else%}{{i.product.stocktotalorgh}}{%endif%}" name="qty" value="{{i.qty}}" style="height:23px; width:100%;"></td>
                   <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notemptylivraison" onkeyup="calculate(event);" name="price" value="{{i.price}}" step=0.01 style="height:23px; width:100%;"></td>
                   <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="{{i.remise}}" class="calculate remise" onkeyup="calculate(event);" name="remise" style="height:23px; width:100%;"></td>
                   <td style="padding: 2px 0; font-size: 13px;" class="netprice">{{i.netprice}}</td>
@@ -330,7 +330,7 @@
 
   function addrowbonsortie(event){
         let target=$(event.target)
-        firstcompany=target.attr('firstcompany')
+        farah=target.attr('farah')
         parentdiv=target.parent().parent().parent().parent()
         console.log(parentdiv)
         // this reset the select2 value
@@ -348,12 +348,12 @@
           alertify.error('Veuillez remplir tous les champs')
           return
         }
-        var [ref, name, dp, stockfirstcompany, stockfacturefirstcompany, stocksecondcompany, stockfacturesecondcompany, id, sellprice, remise, netprice, representprice] = addname.attr('data').split('§');
+        var [ref, name, dp, stockfarah, stockfacturefarah, stockorgh, stockfactureorgh, id, sellprice, remise, netprice, representprice] = addname.attr('data').split('§');
         //console.log(ref, name, dp, stock, id, sellprice, remise, netprice, representprice)
         pdcts=JSON.parse(localStorage.getItem('pdctsinbonsortie')) || []
         console.log(id, pdcts, pdcts.includes(id))
         // distinguished id will be an id to store in ids local
-        distid=firstcompany=='1'?'f'+id:'o'+id
+        distid=farah=='1'?'f'+id:'o'+id
         if (pdcts.includes(distid)){
           parentdiv.find('.addstock').val('')
           parentdiv.find('.addstockfacture').val('')
@@ -378,8 +378,8 @@
         let addtotal=(parseFloat(addqty.val())*parseFloat(net)).toFixed(2)
         // ${stock<=0? "text-danger":"" }"
         let tr = `
-        <tr class="itemrow" productid=${id} firstcompany=${firstcompany}>
-            <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${id})">${firstcompany=='1'?'(S2)':'(S1)'} ${ref}</td>
+        <tr class="itemrow" productid=${id} farah=${farah}>
+            <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${id})">${farah=='1'?'(FR)':'(OR)'} ${ref}</td>
             <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${name}</td>
             <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event); checkmax(event)" name="qty" max=${max} value="${addqty.val()}" style="height:23px; width:100%;"></td>
             <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notemptylivraison" onkeyup="calculate(event)" name="price" value="${addprice.val()}" step=0.01 style="height:23px; width:100%;"></td>
@@ -391,7 +391,7 @@
         </tr>
         `
         item={
-          'firstcompany':firstcompany,
+          'farah':farah,
           'max':max,
           'id': id,
           'qty': addqty.val(),
@@ -399,9 +399,9 @@
           'remise': addremise.val(),
           'total': addtotal,
           'name': name,
-          'ref': `${firstcompany=='1'?'(S2)':'(S1)'} ${ref}`,
+          'ref': `${farah=='1'?'(FR)':'(OR)'} ${ref}`,
           'dp': dp,
-          'stock': stockfirstcompany,
+          'stock': stockfarah,
           'clientprice': priceclient,
           'netprice': netprice
         }
@@ -631,7 +631,7 @@
     //   for (let i=0; i<pdcts.length; i++){
     //     item=pdcts[i]
     //     let tr = `
-    //     <tr class="itemrow ${item.stock<=0? "text-danger":"" }" productid=${item.id} firstcompany=${item.firstcompany}>
+    //     <tr class="itemrow ${item.stock<=0? "text-danger":"" }" productid=${item.id} farah=${item.farah}>
     //         <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${item.id})">${item.ref}</td>
     //         <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${item.name}</td>
     //         <td style="paddingpx 0; font-size: 13px;" class="dp">${item.dp}</td>
@@ -677,20 +677,20 @@
               return
           }
 
-          var [ref, name, dp, stocktotalfirstcompany, stockfacturefirstcompany, stocktotalsecondcompany, stockfacturesecondcompany, id, sellprice, remise, netprice, representprice, term] = $(this).val().split('§');
+          var [ref, name, dp, stocktotalfarah, stockfacturefarah, stocktotalorgh, stockfactureorgh, id, sellprice, remise, netprice, representprice, term] = $(this).val().split('§');
           console.log('>> id', id)
           let addname=$(this).parent().parent().find('input[name="addname"]')
           let addprice=$(this).parent().parent().find('input[name="addprice"]')
           let addremise=$(this).parent().parent().find('input[name="addremise"]')
           let addqty=$(this).parent().parent().find('input[name="addqty"]')
           if (term.startsWith('fr-')){
-            addqty.attr('max', stocktotalfirstcompany)
+            addqty.attr('max', stocktotalfarah)
             // add a sign to addrowbtn to use it when adding row #sfefr435
-            // 1 means thsi product is a firstcompany product
-            $('.addrowbtn').attr('firstcompany', 1)
+            // 1 means thsi product is a farah product
+            $('.addrowbtn').attr('farah', 1)
           }else{
-            addqty.attr('max', stocktotalsecondcompany)
-            $('.addrowbtn').attr('firstcompany', 0)
+            addqty.attr('max', stocktotalorgh)
+            $('.addrowbtn').attr('farah', 0)
 
           }
           let repswithprice=[]
@@ -702,7 +702,7 @@
           addqty.focus()
           addprice.val(0)
           addremise.val(0)
-          addname.val(`${ref} - ${name}`).attr('data', `${ref}§${name}§${dp}§${stocktotalfirstcompany}§${stockfacturefirstcompany}§${stocktotalsecondcompany}§${stockfacturesecondcompany}§${id}§${sellprice}§${remise}§${netprice}§${representprice}`)
+          addname.val(`${ref} - ${name}`).attr('data', `${ref}§${name}§${dp}§${stocktotalfarah}§${stockfacturefarah}§${stocktotalorgh}§${stockfactureorgh}§${id}§${sellprice}§${remise}§${netprice}§${representprice}`)
           $.get('/products/getqtyprice',
             {
               'term':term,
@@ -712,8 +712,8 @@
             function(data){
               $('.producthistory').html(data)
           })
-          $('.addstock').text('Stock firstcompany: '+stocktotalfirstcompany)
-          $('.addstockfacture').text('Stock secondcompany: '+stocktotalsecondcompany)
+          $('.addstock').text('Stock farah: '+stocktotalfarah)
+          $('.addstockfacture').text('Stock orgh: '+stocktotalorgh)
           // we are getting ere list of reps that have price
           
           $.ajax({
@@ -730,7 +730,7 @@
               success: function(data){
                 console.log(data)
                 parentdiv.find('.addclientprice').html((`${data.price} (${data.remise}%)`))
-                $('.addbyuprice').html(`pr. achat firstcompany: ${data.frbuyprice}(${data.frremise}%) <br> pr. achat secondcompany: ${data.orbuyprice}(${data.orremise}%)`)
+                $('.addbyuprice').html(`pr. achat farah: ${data.frbuyprice}(${data.frremise}%) <br> pr. achat orgh: ${data.orbuyprice}(${data.orremise}%)`)
               }
             })
 
@@ -780,7 +780,7 @@
               //let clientprice= tr.find('.clientprice').text()
               let productid = tr.find('input[name="productid"]').val()
               let product = {
-                'firstcompany':tr.attr('firstcompany'),
+                'farah':tr.attr('farah'),
                 'qty': qty,
                 'name': name,
                 'ref': ref,

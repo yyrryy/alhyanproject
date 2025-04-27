@@ -19,7 +19,7 @@
             <td>{{ i.date|date:'d/m/Y' }}</td>
             <td class="qtyofprice" id="{{i.id}}">{{ i.quantity }} </td>
             <td>
-                ({% if i.isfirstcompany %}FR {% else %}OR{%endif%})
+                ({% if i.isfarah %}FR {% else %}OR{%endif%})
             </td>
             <td>{{ i.price }}</td>
             <td>{{ i.remise1 }}</td>

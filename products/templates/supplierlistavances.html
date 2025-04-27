@@ -307,7 +307,7 @@
 <script>
     function deleteavancesupp(event, avanceid){
         alertify.prompt( 'Confirmer', 'Mot de pass', 'Prompt Value'
-               , function(evt, value) { if (value=='secondcompanyAD'){
+               , function(evt, value) { if (value=='ORGHAD'){
                     $.get('/products/deleteavancesupp', {
                         'avanceid':avanceid
                     }, (data)=>{

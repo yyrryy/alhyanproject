@@ -36,61 +36,54 @@
 </head>
 <body>
 
-<div id="printfc{{facture.id}}" style="position:relative;">
+<div id="printfc{{facture.id}}" class="px-2" style="position:relative;">
   {% for i in orderitems %}
   {% if forloop.counter == orderitems|length %}
   <!-- last iteration -->
-  <div class="postion-relative px-5 facture{{facture.id}}holder p-3" style="min-height: 29.7cm;width: 21cm; border:1px solid;">
+  <div class="postion-relative facture{{facture.id}}holder p-3" style="min-height: 29.7cm;width: 21cm; border:1px solid;">
 
 
     <!-- facture header -->
     <div class="">
-      {% if not isfirstcompany %}
-      <img src="/media/logo.jpg" style="width: 100%;" alt="" class="factureheader">
+      {% if not isfarah %}
+      <img src="/media/factureheader.jpg" style="width: 100%;" alt="" class="factureheader">
       {% endif %}
-      <div class="d-flex justify-content-between" style="border: 1px solid; padding: 5px; border-radius: 10px;">
-        <div>
-          Date: <strong>{{facture.date|date:"d/m/Y"}}</strong>
-        </div>
-        <div>
+      <div class="d-flex justify-content-between">
+        <div style="border: 1px solid; padding: 5px; border-radius: 10px;">
+          Date: <strong>{{facture.date|date:"d/m/Y"}}</strong><br>
           Facture N°:<strong>{{facture.facture_no}}</strong><br>
-        </div>
-        <div>
+        
           page: {{forloop.counter}}/{{orderitems|length}}<br>
-        </div>
+        
       </div>
-      <div class="d-flex justify-content-between" style="border: 1px solid; padding: 5px; border-radius: 10px;">
+        <div style="width: 60%; border: 1px solid; padding: 5px; border-radius: 10px;">
         
-        <!-- Code: <strong>
-          {{facture.client.code}}
-        </strong>
-        
-        <br> -->
-        <div>
-
-          Client: 
-          <strong>{{facture.client.name.upper}}</strong>
-        </div>
-        <div>
-
-          ICE: <strong>
-            {% if facture.client.ice %}{{facture.client.ice}} {% endif %}
+          Code: <strong>
+            {{facture.client.code}}
           </strong>
-        </div>
-        <div>
-          Address: <strong>{{client.address}} {{facture.client.city}}</strong>
-        </div>
-        
+          
+          <br>
+          Client: 
+          <strong>{{facture.client.name.upper}}</strong><br>
+          ICE: <strong>
+             {% if facture.client.ice %}{{facture.client.ice}} {% endif %}
+          </strong><br>
+          Address: <strong>{{client.address}} {{facture.client.city}}</strong><br>
+          Note: <strong>{{facture.note.upper}}</strong>
       </div>
-      Note: <strong>{{facture.note.upper}}</strong>
       
+      </div>
+        <div class="d-flex justify-content-between">
+          
+          
+        </div>
 
 
     </div>
 
     <!-- facture items -->
     <div class="orderitems mt-3 bg-white rounded p-2 position-relative">
-      {% if not isfirstcompany %}
+      {% if not isfarah %}
       <img width="1000em" class="bgfacture" src="/media/facturebody.jpg" style="
       position: absolute !important;
       right: 4.3em;
@@ -103,17 +96,17 @@
         <thead style="background: #c9c9c9; font-size: 10px;
         font-weight: 800;" class="text-center">
           <tr>
-            <td style="width: 19%;">Ref</td>
-            <td style="width: 35%;">Designation</td>
-            <td style="width: 9%;">Qté</td>
-            <td style="width: 14%;">P.U</td>
-            <td style="width: 5%;">Rem</td>
-            <td style="width: 16%">Mantant</td>
+            <td>Ref</td>
+            <td>Designation</td>
+            <td>Qté</td>
+            <td>P.U</td>
+            <td>Rem</td>
+            <td>Mantant</td>
           </tr>
         </thead>
         <tbody>
                 <tr>
-                    <td style="height: 140mm;padding-left:3px">
+                    <td style="height: 135mm;padding-left:3px">
                       {% for v in i %}
                       {{v.product.ref.upper}}
                       {% if not forloop.counter == i|length %}<br>{% endif %}
@@ -122,7 +115,7 @@
                   <td style="white-space: nowrap;padding-left:3px">
                       {% for v in i %}
                         {% if names %}
-                        {{v.product.name.upper|slice:"50"}}
+                        {{v.product.name.upper|slice:"30"}}
                         {% else %}
                         {{v.product.category.name.upper}}
                         {% endif %}
@@ -165,15 +158,15 @@
 
     
       <div class="d-flex">
-        <div class="col-7">
-          Arreter la presente facture à la somme de: <br> <span class="totalfactureprint" style="font-size:10px ;"></span>
+        <div class="col-8">
+          Arreter la presente facture à la somme de: <br> <span class="totalfactureprint" style="font-size:9px ;"></span>
           <div style="border:1px solid; height: 6em; width: 60%; border-radius: 6px;">
             <span>
               Cachet et signature
             </span>
           </div>
         </div>
-        <div class="col-5">
+        <div class="col-4">
           <table style="border-color: black;" class="table table-bordered text-start" >
           <tr>
             <td>
@@ -242,66 +235,55 @@
         </div>
         
       </div>
-      {% if not isfirstcompany %}
+      {% if not isfarah %}
       <div class="text-center" style="font-size:11px; margin-top: 5px;">
         <strong style="font-size: 14px;">
-          Siege: xxx Patente: xxx ICE: xx RC: xx CNSS: xx IF: xx Email:  Fix: xx
+          Siege: Lot Dounia II N°118 Bd. Rabia OULED TEIMA Code Postal 83350 Patente: 49901722 ICE: 002394334000087 RC: 6513 CNSS: 1858196 IF: 39498717 Email: orghpieceauto@gmail.com Fix: 0528521331
         </strong>
       </div>
     {% endif %}
   </div>
   {% else %}
-  <div class="postion-relative px-5 facture{{facture.id}}holder p-3" style="min-height: 29.7cm;width: 21cm; border:1px solid;">
+  <div class="postion-relative facture{{facture.id}}holder p-3" style="min-height: 29.7cm;width: 21cm; border:1px solid;">
 
 
     <!-- facture header -->
     <div class="">
-      {% if not isfirstcompany %}
-      <img src="/media/logo.jpg" style="width: 100%;" alt="" class="factureheader">
+      {% if not isfarah %}
+      <img src="/media/factureheader.jpg" style="width: 100%;" alt="" class="factureheader">
       {% endif %}
-      <div class="d-flex justify-content-between" style="border: 1px solid; padding: 5px; border-radius: 10px;">
-        <div>
-          Date: <strong>{{facture.date|date:"d/m/Y"}}</strong>
-        </div>
-        <div>
+      <div class="d-flex justify-content-between">
+        <div style="border: 1px solid; padding: 5px; border-radius: 10px;">
+          Date: <strong>{{facture.date|date:"d/m/Y"}}</strong><br>
           Facture N°:<strong>{{facture.facture_no}}</strong><br>
-        </div>
-        <div>
-          page: {{forloop.counter}}/{{orderitems|length}}<br>
-        </div>
-      </div>
-      <div class="d-flex justify-content-between" style="border: 1px solid; padding: 5px; border-radius: 10px;">
         
-        <!-- Code: <strong>
+          page: {{forloop.counter}}/{{orderitems|length}}<br>
+        
+      </div>
+      <div style="width: 60%; border: 1px solid; padding: 5px; border-radius: 10px;">
+        
+        Code: <strong>
           {{facture.client.code}}
         </strong>
         
-        <br> -->
-        <div>
-
-          Client: 
-          <strong>{{facture.client.name.upper}}</strong>
-        </div>
-        <div>
-
-          ICE: <strong>
-            {% if facture.client.ice %}{{facture.client.ice}} {% endif %}
-          </strong>
-        </div>
-        <div>
-          Address: <strong>{{client.address}} {{facture.client.city}}</strong>
-        </div>
-        
-      </div>
-      Note: <strong>{{facture.note.upper}}</strong>
+        <br>
+        Client: 
+        <strong>{{facture.client.name.upper}}</strong><br>
+        ICE: <strong>
+           {% if facture.client.ice %}{{facture.client.ice}} {% endif %}
+        </strong><br>
+        Address: <strong>{{client.address}} {{facture.client.city}}</strong><br>
+        Note: <strong>{{facture.note.upper}}</strong>
+    </div>
       
+      </div>
 
 
     </div>
 
     <!-- facture items -->
     <div class="orderitems mt-3 bg-white rounded p-2 position-relative">
-      {% if not isfirstcompany %}
+      {% if not isfarah %}
       <img width="1000em" class="bgfacture" src="/media/facturebody.jpg" style="
       position: absolute !important;
       right: 4.3em;
@@ -314,17 +296,17 @@
         <thead style="background: #c9c9c9; font-size: 10px;
         font-weight: 800;" class="text-center">
           <tr>
-            <td style="width: 19%;">Ref</td>
-            <td style="width: 35%;">Designation</td>
-            <td style="width: 9%;">Qté</td>
-            <td style="width: 14%;">P.U</td>
-            <td style="width: 5%;">Rem</td>
-            <td style="width: 16%">Mantant</td>
+            <td>Ref</td>
+            <td>Designation</td>
+            <td>Qté</td>
+            <td>P.U</td>
+            <td>Rem</td>
+            <td>Mantant</td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="height: 140mm; padding-left:3px">
+            <td style="height: 135mm; padding-left:3px">
               {% for v in i %}
               {{v.product.ref.upper}}
               {% if not forloop.counter == i|length %}<br>{% endif %}
@@ -333,7 +315,7 @@
             <td style="white-space: nowrap; padding-left:3px">
               {% for v in i %}
                 {% if names %}
-                {{v.product.name.upper|slice:"50"}}
+                {{v.product.name.upper|slice:"30"}}
                 {% else %}
                 {{v.product.category.name.upper}}
                 {% endif %}
@@ -354,7 +336,7 @@
           </td>
           <td class="text-center">
             {% for v in i %}
-            {{v.remise}}%
+            {% if v.remise %}{{v.remise}}%{% endif %}
             {% if not forloop.counter == i|length %}<br>{% endif %}
             {% endfor %}
           </td>
@@ -371,10 +353,10 @@
     </div>
 
     <!-- facture footer -->
-    {% if not isfirstcompany %}
+    {% if not isfarah %}
       <div class="text-center" style="font-size:11px; margin-top: 5px;">
         <strong style="font-size: 14px;">
-          Siege: xx Patente: xx ICE: xx RC: xx CNSS: xx IF: xx Email: xx Fix: xx
+          Siege: Lot Dounia II N°118 Bd. Rabia OULED TEIMA Code Postal 83350 Patente: 49901722 ICE: 002394334000087 RC: 6513 CNSS: 1858196 IF: 39498717 Email: orghpieceauto@gmail.com Fix: 0528521331
         </strong>
       </div>
     {% endif %}

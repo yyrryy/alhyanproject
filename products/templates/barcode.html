@@ -49,8 +49,19 @@
             <!-- <div class="label d-flex justify-content-between border position-relative"> -->
             <div class="label px-2" style="font-size: 10px;">
                 <!-- <div class="label d-flex justify-content-between border position-relative"> -->
-                
-                
+                <div class=""  style="font-size: 10px;text-align: center;">
+                    <!-- <div class=""  style="font-size: 10px;position: relative;margin-bottom: 15px;margin-top: 5px;"> -->
+                    <strong>{{i.0.upper}}</strong>
+                    <!-- <strong style="position: absolute;">{{i.0.upper}}</strong> -->
+                </div>
+                <div class="d-flex justify-content-between">
+                    <strong>
+                        {{i.4}}000{{i.2|floatformat:-2}}
+                    </strong>
+                    <strong>
+                        {{i.5}}
+                    </strong>
+                </div>
                 <div class="d-flex">
                 <!-- <div class="d-flex justify-content-between align-items-center"> -->
                 <div class="col-4">
@@ -62,14 +73,6 @@
                 <!-- <div style="position: absolute; top: 0;right: 0; width: 30%;"> -->
                 <!-- <div style="font-size: 12px; padding-left: 17px; margin-top: -5px;">{{text}}</div> -->
                 <!-- <div style="font-size: 12px;">{{text}}</div> -->
-                <div class=""  style="font-size: 10px;">
-                    <!-- <div class=""  style="font-size: 10px;position: relative;margin-bottom: 15px;margin-top: 5px;"> -->
-                    <strong>{{i.0.upper}}</strong>
-                    <strong>
-                        {{i.5}}
-                    </strong>
-                    <!-- <strong style="position: absolute;">{{i.0.upper}}</strong> -->
-                </div>
             </div>
         {% endfor %}
     </div>

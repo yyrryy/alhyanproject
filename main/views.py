@@ -861,8 +861,6 @@ def productsmarks(request, id):
 @user_passes_test(isadmin, login_url='main:loginpage')
 @login_required(login_url='main:loginpage')
 def system(request):
-    if not Config.objects.exists():
-        Config.objects.create()
     ctx={
         'title':'Dashboard',
         # 'orders':Order.objects.filter(date__date=datetime.date.today()).count(),
@@ -1328,11 +1326,11 @@ def b3921b(request):
             group=user.groups.all().first().name
             if group == 'admin':
                 login(request, user)
-                return redirect('main:system')
+                return redirect('products:ste1')
     if request.user.groups.all():
         group=request.user.groups.all().first().name
         if group == 'admin':
-            return redirect('main:system')
+            return redirect('products:ste1')
     return render(request, 'admindash.html')
 # ssl validation
 def validation(request):

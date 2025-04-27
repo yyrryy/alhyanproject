@@ -172,11 +172,11 @@
                           {{i.prixnet|floatformat:2}}
                       </td>
                       <td style="padding: 5px; font-weight: bold;" class="text-center text-danger stock">
-                          {% if target == 'f' %} {{i.stocktotalfirstcompany}} {% else %} {{i.stocktotalsecondcompany}} {% endif %}
+                          {% if target == 'f' %} {{i.stocktotalfarah}} {% else %} {{i.stocktotalorgh}} {% endif %}
                       </td>
                       <td style="padding: 5px; font-weight: bold;" class="text-center stockfacture" style="color: blue;">
                         <span class="stockfacture invisible">
-                          {% if target == 'f' %} {{i.stockfacturefirstcompany}} {% else %} {{i.stockfacturesecondcompany}} {% endif %}
+                          {% if target == 'f' %} {{i.stockfacturefarah}} {% else %} {{i.stockfactureorgh}} {% endif %}
                         </span>
                     </td>
   
