@@ -825,7 +825,6 @@ def addsupply(request):
     totalbon=request.POST.get('totalbon')
     isfarah=target=='f'
     print('>>>>>>', 'target', target, 'devid', devid, 'cmndid', cmndid, 'nbon', nbon, 'datebon', datebon, 'datefacture', datefacture, 'isfacture', isfacture, 'totalbon', totalbon, 'supplierid', supplierid, 'products', products)
-    
 
     supplier=Supplier.objects.get(pk=supplierid)
     # supplier.rest=float(supplier.rest)+float(totalbon)
@@ -889,6 +888,7 @@ def addsupply(request):
         print('>>> buyprice', buyprice, buyprice-(buyprice*(remise1/100)))
         # netprice=round(float(buyprice)-(float(buyprice)*float(remise)/100), 2)
         netwithremise1=round(buyprice-(buyprice*(remise1/100)), 2)
+        netwith25=round(buyprice-(buyprice*(25/100)), 2)
         netprice=round(float(i['total'])/float(i['qty']), 2)
         print('>>> net price', netprice)
         #product.isnew=True
@@ -934,69 +934,7 @@ def addsupply(request):
             nbon=bon
         )
         if target=='f':
-            # if product.isnegativeinfr:
-            #     print('>> product is negative')
-            #     qtynegative=json.loads(product.frnegative)
-            #     sortitems=json.loads(product.frsorties)
-            #     print('>> ', qtynegative, sortitems)
-            #     thisqty=int(i['qty'])
-            #     #for , ss in zip(qtynegative, sortitems):
-            #     for index, (qq, ss) in enumerate(zip(qtynegative, sortitems)):
-            #         print('>> thisqty, qq', thisqty, qq)
-            #         if not int(qq)==0:
-            #             if not thisqty<=0:
-            #                 # find sortie and add qty and price
-            #                 sorti=Sortieitem.objects.get(pk=ss)
-            #                 prices=json.loads(sorti.pricesofout)
-            #                 qtyofout=json.loads(sorti.qtyofout)
-            #                 if thisqty>=qq:
-            #                     print(">>thisqty>=qq", thisqty>=qq, qq)
-            #                     qtyofout.append(qq)
-            #                     prices.append(st.id)
-            #                     diff=int(thisqty)-int(qq)
-            #                     thisqty=diff
-            #                     st.qtyofprice=diff
-            #                     st.save()
-            #                     qtyofout[index]=0
-            #                     product.save()
-            #                     # qtynegative.remove(qq)
-            #                     # sortitems.remove(ss)
-            #                 else:
-            #                     diff=int(qq)-int(thisqty)
-            #                     qtyofout.append(diff)
-            #                     prices.append(st.id)
-            #                     st.qtyofprice=0
-            #                     st.save()
-            #                     qtyofout[index]=diff
-            #                 sorti.pricesofout=prices
-            #                 sorti.qtyofout=qtyofout
-            #                 sorti.save()
-            #                     # finish
-            #         if sum(qtynegative)==0:
-            #             print('>> sum', sum(qtynegative), qtynegative)
-            #             product.isnegativeinfr=False
-            #         product.save()            
-
-                    
-            # calcul pondiré, stock needs to be more than 0
-            # if product.stocktotalfarah>0:
-            #     print('>> has stock')
-            #     totalqtys=int(product.stocktotalfarah)+int(i['qty'])
-            #     actualtotal=product.stocktotalfarah*product.frnetbuyprice
-            #     print('totalqty, actualtotal', totalqtys, actualtotal)
-            #     # remainingstock=Stockin.objects.filter(qtyofprice__gt=0, product=product, isfarah=True, isavoir=False)
-            #     # for b in remainingstock:
-            #     #     actualtotal+=float(b.price)*float(b.qtyofprice)
-            #     thistotal=int(i['qty'])*netprice
-            #     print('>>>>>> thistotal', thistotal)
-            #     totalprices=round(float(i['total'])+actualtotal, 2)
-            #     pondire=round(totalprices/totalqtys, 2)
-            #     product.frcoutmoyen=pondire
-            #     product.save()
-            #     print('>> coout m', pondire)
-            # else:
-            #print('>> cooutm', netprice)
-            #product.frcoutmoyen=netprice
+            
             product.frremise1=remise1
             product.frremise2=remise2
             product.frremise3=remise3
@@ -1004,81 +942,24 @@ def addsupply(request):
             product.frbuyprice=buyprice
             product.froriginsupp_id=supplierid
             product.frnetbuyprice=netprice
-            print('>> addin qty')
+            product.frsellprice=netwith25
             product.stocktotalfarah=float(product.stocktotalfarah)+float(i['qty'])
             # product.frsellprice=buyprice
             # product.frremisesell=remise1
             # if isfacture:
             #     product.stockfacturefarah=int(product.stockfacturefarah)+int(i['qty'])
         else:
-            # if product.isnegative:
-            #     qtynegative=json.loads(product.negative)
-            #     sortitems=json.loads(product.sorties)
-            #     thisqty=int(i['qty'])
-                
-            #     #for , ss in zip(qtynegative, sortitems):
-            #     for index, (qq, ss) in enumerate(zip(qtynegative, sortitems)):
-            #         if not int(qq)==0:
-            #             if not thisqty<=0:
-            #                 # find sortie and add qty and price
-            #                 sorti=Sortieitem.objects.get(pk=ss)
-            #                 prices=json.loads(sorti.pricesofout)
-            #                 qtyofout=json.loads(sorti.qtyofout)
-            #                 if thisqty>=qq:
-            #                     qtyofout.append(qq)
-            #                     prices.append(st.id)
-            #                     diff=int(thisqty)-int(qq)
-            #                     thisqty=diff
-            #                     st.qtyofprice=diff
-            #                     st.save()
-            #                     qtyofout[index]=0
-            #                     product.save()
-            #                     # qtynegative.remove(qq)
-            #                     # sortitems.remove(ss)
-            #                 else:
-            #                     diff=int(qq)-int(thisqty)
-            #                     qtyofout.append(diff)
-            #                     prices.append(st.id)
-            #                     st.qtyofprice=0
-            #                     st.save()
-            #                     qtyofout[index]=diff
-            #                 sorti.pricesofout=prices
-            #                 sorti.qtyofout=qtyofout
-            #                 sorti.save()
-            #                     # finish
-            #         if sum(qtynegative)==0:
-            #             product.isnegative=False
-            #         product.save()
             
-            # if product.stocktotalorgh>0:
-            #     totalqtys=int(product.stocktotalorgh)+int(i['qty'])
-            #     actualtotal=product.stocktotalorgh*product.netbuyprice
-            #     # remainingstock=Stockin.objects.filter(qtyofprice__gt=0, product=product, isfarah=False)
-            #     # for i in remainingstock:
-            #     #     actualtotal+=float(i.price)*float(i.qtyofprice)
-            #     thistotal=int(i['qty'])*buyprice
-            #     totalprices=round(float(i['total'])+actualtotal, 2)
-            #     pondire=round(totalprices/totalqtys, 2)
-            #     product.coutmoyen=pondire
-            #     product.save()
-            #     print('>> coout m', pondire)
-            # else:
-            #     print('>> cooutm', netprice)
-            #product.coutmoyen=netprice
             product.remise1=remise1
             product.remise2=remise2
             product.remise3=remise3
             product.remise4=remise4
             product.buyprice=buyprice
+            product.sellprice=netwith25
             product.netbuyprice=netprice
             product.originsupp_id=supplierid
             product.stocktotalorgh=float(product.stocktotalorgh)+float(i['qty'])
-            # product.sellprice=buyprice
-            # product.remisesell=remise1
-        
-            # if isfacture:
-            #     product.stockfactureorgh=int(product.stockfactureorgh)+int(i['qty'])
-        # recodrd remise 1, 2, 3, 4
+            
         product.save()
     # # update cout moyen, it will be calculated by deviding total prices by total qty
 

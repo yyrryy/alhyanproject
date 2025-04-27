@@ -45,31 +45,33 @@
 
     <!-- facture header -->
     <div class="">
-      {% if not isfarah %}
-      <img src="/media/factureheader.jpg" style="width: 100%;" alt="" class="factureheader">
+      {% if isfarah %}
+      <h1 class="text-center" style="
+          font-weight: BOLD;
+          font-size: 49px;
+      ">
+        ANAROUZ PIECES AUTO
+      </h1>
       {% endif %}
       <div class="d-flex justify-content-between">
         <div style="border: 1px solid; padding: 5px; border-radius: 10px;">
           Date: <strong>{{facture.date|date:"d/m/Y"}}</strong><br>
           Facture N°:<strong>{{facture.facture_no}}</strong><br>
         
-          page: {{forloop.counter}}/{{orderitems|length}}<br>
+          
         
       </div>
         <div style="width: 60%; border: 1px solid; padding: 5px; border-radius: 10px;">
         
-          Code: <strong>
-            {{facture.client.code}}
-          </strong>
           
-          <br>
+          
           Client: 
           <strong>{{facture.client.name.upper}}</strong><br>
           ICE: <strong>
              {% if facture.client.ice %}{{facture.client.ice}} {% endif %}
           </strong><br>
-          Address: <strong>{{client.address}} {{facture.client.city}}</strong><br>
-          Note: <strong>{{facture.note.upper}}</strong>
+          Address: <strong>{{client.address}} {{facture.client.city}}</strong>
+          
       </div>
       
       </div>
@@ -83,8 +85,8 @@
 
     <!-- facture items -->
     <div class="orderitems mt-3 bg-white rounded p-2 position-relative">
-      {% if not isfarah %}
-      <img width="1000em" class="bgfacture" src="/media/facturebody.jpg" style="
+      {% if isfarah %}
+      <img width="1000em" class="bgfacture" src="/media/body.jpg" style="
       position: absolute !important;
       right: 4.3em;
       opacity: 0.04;
@@ -106,7 +108,7 @@
         </thead>
         <tbody>
                 <tr>
-                    <td style="height: 135mm;padding-left:3px">
+                    <td style="height: 188mm;padding-left:3px">
                       {% for v in i %}
                       {{v.product.ref.upper}}
                       {% if not forloop.counter == i|length %}<br>{% endif %}
@@ -159,12 +161,8 @@
     
       <div class="d-flex">
         <div class="col-8">
-          Arreter la presente facture à la somme de: <br> <span class="totalfactureprint" style="font-size:9px ;"></span>
-          <div style="border:1px solid; height: 6em; width: 60%; border-radius: 6px;">
-            <span>
-              Cachet et signature
-            </span>
-          </div>
+          Arreter la presente facture à la somme de: <br> <span class="totalfactureprint" style="font-size:15px ;"></span>
+          
         </div>
         <div class="col-4">
           <table style="border-color: black;" class="table table-bordered text-start" >
@@ -235,10 +233,10 @@
         </div>
         
       </div>
-      {% if not isfarah %}
+      {% if isfarah %}
       <div class="text-center" style="font-size:11px; margin-top: 5px;">
         <strong style="font-size: 14px;">
-          Siege: Lot Dounia II N°118 Bd. Rabia OULED TEIMA Code Postal 83350 Patente: 49901722 ICE: 002394334000087 RC: 6513 CNSS: 1858196 IF: 39498717 Email: orghpieceauto@gmail.com Fix: 0528521331
+          Siege: MAGASIN SISE A RUE NASSER QUARTIER KAMAL EDDINE II OULED TEIMA ICE: 003709276000011 IF: 66260909 RC: 11185 PATENT: 49905926 Tel: 0666356605 
         </strong>
       </div>
     {% endif %}
@@ -249,31 +247,33 @@
 
     <!-- facture header -->
     <div class="">
-      {% if not isfarah %}
-      <img src="/media/factureheader.jpg" style="width: 100%;" alt="" class="factureheader">
+      {% if isfarah %}
+      <h1 class="text-center" style="
+          font-weight: BOLD;
+          font-size: 49px;
+      ">
+        ANAROUZ PIECES AUTO
+      </h1>
       {% endif %}
       <div class="d-flex justify-content-between">
         <div style="border: 1px solid; padding: 5px; border-radius: 10px;">
           Date: <strong>{{facture.date|date:"d/m/Y"}}</strong><br>
           Facture N°:<strong>{{facture.facture_no}}</strong><br>
         
-          page: {{forloop.counter}}/{{orderitems|length}}<br>
+          
         
       </div>
       <div style="width: 60%; border: 1px solid; padding: 5px; border-radius: 10px;">
         
-        Code: <strong>
-          {{facture.client.code}}
-        </strong>
         
-        <br>
+        
         Client: 
         <strong>{{facture.client.name.upper}}</strong><br>
         ICE: <strong>
            {% if facture.client.ice %}{{facture.client.ice}} {% endif %}
         </strong><br>
-        Address: <strong>{{client.address}} {{facture.client.city}}</strong><br>
-        Note: <strong>{{facture.note.upper}}</strong>
+        Address: <strong>{{client.address}} {{facture.client.city}}</strong>
+        
     </div>
       
       </div>
@@ -283,8 +283,8 @@
 
     <!-- facture items -->
     <div class="orderitems mt-3 bg-white rounded p-2 position-relative">
-      {% if not isfarah %}
-      <img width="1000em" class="bgfacture" src="/media/facturebody.jpg" style="
+      {% if isfarah %}
+      <img width="1000em" class="bgfacture" src="/media/body.jpg" style="
       position: absolute !important;
       right: 4.3em;
       opacity: 0.04;
@@ -306,7 +306,7 @@
         </thead>
         <tbody>
           <tr>
-            <td style="height: 135mm; padding-left:3px">
+            <td style="height: 220mm; padding-left:3px">
               {% for v in i %}
               {{v.product.ref.upper}}
               {% if not forloop.counter == i|length %}<br>{% endif %}
@@ -353,7 +353,7 @@
     </div>
 
     <!-- facture footer -->
-    {% if not isfarah %}
+    {% if isfarah %}
       <div class="text-center" style="font-size:11px; margin-top: 5px;">
         <strong style="font-size: 14px;">
           Siege: Lot Dounia II N°118 Bd. Rabia OULED TEIMA Code Postal 83350 Patente: 49901722 ICE: 002394334000087 RC: 6513 CNSS: 1858196 IF: 39498717 Email: orghpieceauto@gmail.com Fix: 0528521331

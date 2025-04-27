@@ -102,8 +102,8 @@
                 <td style="width:30%;"  onclick="sorttable(event)">Designation</td>
                 <td  onclick="intsorttable(event)">Prix achat</td>
                 <td  onclick="intsorttable(event)">Remise achat</td>
+                <td  onclick="intsorttable(event)">Prix net</td>
                 <td  onclick="intsorttable(event)">Prix Vente</td>
-                <td  onclick="intsorttable(event)">Remise Vente</td>
                 <td  onclick="sorttable(event)">Stock</td>
                 <td class=""  onclick="sorttable(event)">block</td>
                 <!-- <td  onclick="sorttable(event)">Coutmoyen</td> -->
@@ -134,21 +134,22 @@
                     <td style="padding: 5px; font-weight: bold;" class="text-center">
                       {%if isfarah%}{{i.frremise1}}{%else%}{{i.remise1}}{%endif%}
                     </td>
+                    <td style="padding: 5px; font-weight: bold;" class="text-center">
+                      {%if isfarah%}{{i.frnetbuyprice}}{%else%}{{i.netbuyprice}}{%endif%}
+                    </td>
                     <td style="padding: 5px; font-weight: bold; font-size: 14px; color: var(--orange);" class="text-center">
                       {%if isfarah%}{{i.frsellprice}}{%else%}{{i.sellprice}}{%endif%}
                     </td>
-                    <td style="padding: 5px; font-weight: bold;" class="text-center">
-                      {%if isfarah%}{{i.frremisesell}}{%else%}{{i.remisesell}}{%endif%}
-                    </td>
+                    
                     <td style="padding: 5px; font-weight: bold;" class="text-center text-danger stock">
-                        {% if isfarah %} {{i.stocktotalfarah}} {% else %} {{i.stocktotalorgh}} {% endif %}
+                      {% if isfarah %} {{i.stocktotalfarah}} {% else %} {{i.stocktotalorgh}} {% endif %}
                     </td>
                     
 
                     
                     <td style="padding: 5px; font-weight: bold;" class="text-success">
                       {{i.block}}
-                  </td>
+                    </td>
                   
                   <!-- <td style="padding: 5px; font-weight: bold;" class="text-danger">
                     {%if i.coutmoyen%}{{i.coutmoyen}}{%endif%}
