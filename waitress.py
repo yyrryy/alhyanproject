@@ -1,22 +1,41 @@
 import os
 from threading import Thread
 from time import sleep
+import socket
 import subprocess
 import sys
 
-# os.system('start /B waitress-serve 192.168.1.8 --port=80 Gro.wsgi:application')
+# Function to get the local machine's IPv4 address
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0)
+    try:
+        s.connect(('10.254.254.254', 1))  # Attempt to connect to a non-local address
+        ip = s.getsockname()[0]
+    except Exception:
+        ip = '127.0.0.1'  # fallback to localhost if no external IP is found
+    finally:
+        s.close()
+    return ip
+
+# Function to run the Django server using Waitress
 def runserver():
-    os.system('waitress-serve --host=192.168.0.102 --port=80 alhyan.wsgi:application')
+    ip = get_local_ip()  # Get the dynamic IP address
+    #os.system(f'waitress-serve --host={ip} --port=80 alhyan.wsgi:application')
+    os.system('py manage.py runserver 192.168.0.102:80')
 
+# Function to launch Chrome with the dynamically obtained IP address
 def lunchchrome():
-    # ensure the django server is up and running
-    sleep(2)
-    # get ipv4 address
-    os.system('start chrome http://192.168.0.102')
-t1=Thread(target=runserver)
+    sleep(2)  # Ensure the server is up and running
+    ip = get_local_ip()  # Get the dynamic IP address
+    os.system(f'start chrome http://192.168.0.102')
+    # os.system(f'start chrome http://{ip}')
 
-t2=Thread(target=lunchchrome)
+# Create threads for running the server and launching Chrome
+t1 = Thread(target=runserver)
+t2 = Thread(target=lunchchrome)
 
+# Start the server and launch Chrome in parallel
 t1.start()
 sleep(2)
 t2.start()
