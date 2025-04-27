@@ -6,7 +6,7 @@ import sys
 
 # os.system('start /B waitress-serve 192.168.1.8 --port=80 Gro.wsgi:application')
 def runserver():
-    os.system('waitress-serve --host=192.168.0.102 --port=80 Gro.wsgi:application')
+    os.system('waitress-serve --host=192.168.0.102 --port=80 alhyan.wsgi:application')
 
 def lunchchrome():
     # ensure the django server is up and running
