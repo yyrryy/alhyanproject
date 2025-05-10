@@ -1238,11 +1238,11 @@ a .uil {
           $('.addscreenhtml').html(data)
         })
       }
-      function getitemsforlistbl(event){
+      function getitemsforlistbl(event, target){
     let term=$('.searchitemsforlistbl').val()
     if (term.length>=2){
       $('.itemsforlistblresult').html('<tr><td>searching....</td></tr>')
-      $.get('/products/getitemsforlistbl?target=o', {'term':term}, (data)=>{
+      $.get('/products/getitemsforlistbl?target='+target, {'term':term}, (data)=>{
         console.log(data)
         $('.brands').html('')
         $('.categoriesfilter').html('')

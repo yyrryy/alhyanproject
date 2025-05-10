@@ -885,6 +885,7 @@ def addsupply(request):
         remise4=0 if i['remise4']=='' else float(i['remise4'])
 
         buyprice=float(i['price'])
+        sellprice=float(i['sellprice'])
         print('>>> buyprice', buyprice, buyprice-(buyprice*(remise1/100)))
         # netprice=round(float(buyprice)-(float(buyprice)*float(remise)/100), 2)
         netwithremise1=round(buyprice-(buyprice*(remise1/100)), 2)
@@ -942,7 +943,7 @@ def addsupply(request):
             product.frbuyprice=buyprice
             product.froriginsupp_id=supplierid
             product.frnetbuyprice=netprice
-            product.frsellprice=netwith25
+            product.frsellprice=sellprice
             product.stocktotalfarah=float(product.stocktotalfarah)+float(i['qty'])
             # product.frsellprice=buyprice
             # product.frremisesell=remise1
@@ -955,7 +956,7 @@ def addsupply(request):
             product.remise3=remise3
             product.remise4=remise4
             product.buyprice=buyprice
-            product.sellprice=netwith25
+            product.sellprice=sellprice
             product.netbuyprice=netprice
             product.originsupp_id=supplierid
             product.stocktotalorgh=float(product.stocktotalorgh)+float(i['qty'])
@@ -4107,7 +4108,7 @@ def relevsupplier(request):
     else:
         # orgh
         avoirs=Avoirsupplier.objects.filter(supplier_id=supplierid, avoirfacture=False, date__range=[startdate, enddate], ispaid=False)
-        reglementsbl=PaymentSupplier.objects.filter(supplier_id=supplierid, date__range=[startdate, enddate], isavoir=False)
+        reglementsbl=PaymentSupplier.objects.filter(supplier_id=supplierid, date__range=[startdate, enddate], isavoir=False, isfarah=False)
         avances=Avancesupplier.objects.filter(supplier_id=supplierid, isfarah=False, date__range=[startdate, enddate])
         if isrelevefacture:
             bons=Factureachat.objects.filter(supplier_id=supplierid, date__range=[startdate, enddate], isfarah=False)

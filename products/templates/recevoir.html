@@ -43,40 +43,43 @@
                     <select class="w-100 form-select resultsholderbonachat mb-2" id="productsselect2" style="width:100%;">
 
                     </select>
-                    <div class="row">
+                    <div class="row mt-2">
                         <div class="col-3" hidden>
                             <input type="number" class="form-control" placeholder="Devise" name="adddevise">
 
                           </div>
-                          <div class="col-3">
+                          <div class="col-2">
                             <input type="number" class="form-control" placeholder="Quantité" name="addqty">
                             <div class="addstock text-danger"></div>
                           </div>
-                          <!-- <div class="col-3">
+                          <!-- <div class="col-2">
                             <input type="number" class="form-control" placeholder="Quantité jeux" name="addqtyjeu">
                             <div class="addstock text-danger"></div>
                           </div> -->
-                          <div class="col-3">
+                          <div class="col-2">
                             <input type="number" class="form-control" placeholder="Prix" name="addprice">
                             <div class="addlastbuyprice text-danger"></div>
                           </div>
-                          <div class="col-3">
+                          <div class="col-2">
                             <input type="number" class="form-control" placeholder="Remise1" name="addremise1">
                           </div>
-                          <div class="col-3">
+                          <div class="col-2">
+                            <input type="number" class="form-control" placeholder="Prix vente" name="addsellprice" style="background: #d8f0a8;">
+                          </div>
+                          <div class="col-2" hidden>
                             <input type="number" class="form-control" placeholder="Remise2" name="addremise2">
                           </div>
-                          <div class="col-3">
+                          <div class="col-2" hidden>
                             <input type="number" class="form-control" placeholder="Remise3" name="addremise3">
                           </div>
-                          <div class="col-3">
+                          <div class="col-3" hidden>
                             <input type="number" class="form-control" placeholder="Remise4" name="addremise4">
                           </div>
                           <div class="col-3">
                             <button class="btn bg-darkblue text-white" onclick="addrowbonachat(event)">Ajouter</button>
                           </div>
                           <div class="col-3">
-                            <button class="btn bg-darkblue text-white addrowjeubtn" onclick="addrowbonachatjeu(event)">Ajouter jeux</button>
+                            <!-- <button class="btn bg-darkblue text-white addrowjeubtn" onclick="addrowbonachatjeu(event)">Ajouter jeux</button> -->
                           </div>
                           <div class="col-12">
                             <input hidden readonly type="text" name="addname" class="form-control">
@@ -106,9 +109,10 @@
                     <td style=" width: 5%;">Quantité</td>
                     <td style=" width: 5%;">Prix</td>
                     <td style=" width: 5%;">Remise1</td>
-                    <td style=" width: 5%;">Remise2</td>
-                    <td style=" width: 5%;">Remise3</td>
-                    <td style=" width: 5%;">Remise4</td>
+                    <td style=" width: 5%;">Prix vente</td>
+                    <td hidden style=" width: 5%;">Remise2</td>
+                    <td hidden style=" width: 5%;">Remise3</td>
+                    <td hidden style=" width: 5%;">Remise4</td>
                     <td style=" width: 5%;">Total</td>
                 </tr>
             </thead>
@@ -254,6 +258,7 @@
     let adddevise=parentdiv.find('[name="adddevise"]')
     let addqty=parentdiv.find('[name="addqty"]')
     let addprice=parentdiv.find('[name="addprice"]')
+    let addsellprice=parentdiv.find('[name="addsellprice"]')
     let addremise1=parentdiv.find('[name="addremise1"]')
     let addremise2=parentdiv.find('[name="addremise2"]')
     let addremise3=parentdiv.find('[name="addremise3"]')
@@ -275,6 +280,7 @@
       addremise3.val('')
       addremise4.val('')
       addprice.val('')
+      addsellprice.val('')
       adddevise.val('')
       alertify.error('Ce produit est deja dans le bon')
       return
@@ -319,9 +325,10 @@
       <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notempty" onkeyup="calculatebonachat(event)" name="qty" value="${realqty}" style="height:23px; width:65px;"></td>
       <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notempty" onkeyup="calculatebonachat(event)" name="price" value="${unitprice}" step=0.01 style="height:23px; width:65px;"></td>
       <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise1.val()}" class="calculate remise1" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-      <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise2.val()}" class="calculate remise2" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-      <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise3.val()}" class="calculate remise3" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-      <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise4.val()}" class="calculate remise4" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td>
+      <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addsellprice.val()}" class="calculate sellprice" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+      <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise2.val()}" class="calculate remise2" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+      <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise3.val()}" class="calculate remise3" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+      <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise4.val()}" class="calculate remise4" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td>
       <td style="padding: 2px 0; font-size: 13px;" class="total">${addtotal}</td>
       <input type="hidden" name="productid" value="${id}">
       
@@ -444,6 +451,7 @@
       let adddevise=parentdiv.find('[name="adddevise"]')
       let addqty=parentdiv.find('[name="addqty"]')
       let addprice=parentdiv.find('[name="addprice"]')
+      let addsellprice=parentdiv.find('[name="addsellprice"]')
       let addremise1=parentdiv.find('[name="addremise1"]')
       let addremise2=parentdiv.find('[name="addremise2"]')
       let addremise3=parentdiv.find('[name="addremise3"]')
@@ -465,6 +473,7 @@
         addremise3.val('')
         addremise4.val('')
         addprice.val('')
+        addsellprice.val('')
         adddevise.val('')
         alertify.error('Ce produit est deja dans le bon')
         return
@@ -486,6 +495,7 @@
         'dp':dp,
         'qty':addqty.val(),
         'price':addprice.val(),
+        'sellprice':addsellprice.val(),
         'remise1':addremise1.val(),
         'remise2':addremise2.val(),
         'remise3':addremise3.val(),
@@ -505,9 +515,10 @@
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notempty" onkeyup="calculatebonachat(event)" name="qty" value="${addqty.val()}" style="height:23px; width:65px;"></td>
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notempty" onkeyup="calculatebonachat(event)" name="price" value="${addprice.val()}" step=0.01 style="height:23px; width:65px;"></td>
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise1.val()}" class="calculate remise1" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise2.val()}" class="calculate remise2" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise3.val()}" class="calculate remise3" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise4.val()}" class="calculate remise4" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td>
+        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addsellprice.val()}" class="calculate sellprice" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+        <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise2.val()}" class="calculate remise2" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+        <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise3.val()}" class="calculate remise3" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+        <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise4.val()}" class="calculate remise4" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td>
         <td style="padding: 2px 0; font-size: 13px;" class="total">${addtotal}</td>
         <input type="hidden" name="productid" value="${id}">
         
@@ -655,6 +666,7 @@
             let ref = tr.find('.ref').text()
             let devise = tr.find('.devise').val()
             let price = tr.find('.price').val()
+            let sellprice = tr.find('.sellprice').val()
             let remise1 = tr.find('.remise1').val()
             let remise2 = tr.find('.remise2').val()
             let remise3 = tr.find('.remise3').val()
@@ -665,6 +677,7 @@
                 'name': name,
                 'ref': ref,
                 'price': price,
+                'sellprice': sellprice,
                 'remise1': remise1,
                 'remise2': remise2,
                 'remise3': remise3,
@@ -786,9 +799,10 @@
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notempty" onkeyup="calculatebonachat(event)" name="qty" value="${item.qty}" style="height:23px; width:65px;"></td>
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notempty" onkeyup="calculatebonachat(event)" name="price" value="${item.price}" step=0.01 style="height:23px; width:65px;"></td>
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise1}" class="calculate remise1" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise2}" class="calculate remise2" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise3}" class="calculate remise3" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
-        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise4}" class="calculate remise4" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td>
+        <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.sellprice}" class="calculate sellprice" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+        <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise2}" class="calculate remise2" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+        <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise3}" class="calculate remise3" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td></td>
+        <td hidden style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise4}" class="calculate remise4" onkeyup="calculatebonachat(event)" name="remise" style="height:23px; width:65px;"></td>
         <td style="padding: 2px 0; font-size: 13px;" class="total">${item.total}</td>
         <input type="hidden" name="productid" value="${item.id}">
         
