@@ -22,13 +22,13 @@ def get_local_ip():
 def runserver():
     ip = get_local_ip()  # Get the dynamic IP address
     #os.system(f'waitress-serve --host={ip} --port=80 alhyan.wsgi:application')
-    os.system('py manage.py runserver 192.168.0.102:80')
+    os.system(f'py manage.py runserver {ip}:80')
 
 # Function to launch Chrome with the dynamically obtained IP address
 def lunchchrome():
     sleep(2)  # Ensure the server is up and running
     ip = get_local_ip()  # Get the dynamic IP address
-    os.system(f'start chrome http://192.168.0.102')
+    os.system(f'start chrome http://{ip}')
     # os.system(f'start chrome http://{ip}')
 
 # Create threads for running the server and launching Chrome
@@ -37,5 +37,5 @@ t2 = Thread(target=lunchchrome)
 
 # Start the server and launch Chrome in parallel
 t1.start()
-sleep(2)
+sleep(3)
 t2.start()
