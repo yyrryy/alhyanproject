@@ -10766,7 +10766,7 @@ def factureprint(request, id):
     orderitems=Livraisonitem.objects.filter(bon__in=order.bons.all())
     # split the orderitems into chunks of 10 items
     orderitems=list(orderitems)
-    orderitems=[orderitems[i:i+25] for i in range(0, len(orderitems), 25)]
+    orderitems=[orderitems[i:i+36] for i in range(0, len(orderitems), 36)]
     hasespece=PaymentClientbl.objects.filter(factures__in=[order], mode='espece').exists()
     print('>> hasespece')
     ht=order.total/1.2
