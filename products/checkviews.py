@@ -2434,7 +2434,7 @@ def printbarcode(request):
     barcodes = []
     for i in products:
         if isfarah:
-            ref='fr-'+i['ref'].strip()
+            ref='S1-'+i['ref'].strip()
         else:
             ref=i['ref'].strip()
         print('>>> ref', ref)
