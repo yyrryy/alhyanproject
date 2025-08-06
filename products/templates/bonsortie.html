@@ -58,28 +58,22 @@
                     </select>
                 </div> -->
                 <div class="mb-2 col-4">
-                    <input type="date" class="form-control datebonbl" name="datebon" placeholder="Date bon">
+                  <input type="date" class="form-control datebonbl" name="datebon" placeholder="Date bon">
                 </div>
                 <div class="mb-2 col-4">
                   <input placeholder="transport" type="text" class="form-control transport" name="transport">
                 </div>
                 <div class="mb-2 col-4">
-                    <input type="text" class="form-control note" name="note" placeholder="Note">
+                  <input type="text" class="form-control note" name="note" placeholder="Note">
                 </div>
-                <select id="cars" name="cars" class="select2 cars">
-                  {% for i in cars %}
-                  <option value="{{i.name}}">{{i.name}}</option>
-                  {% endfor %}
-                </select>
+                <strong>Tomobil</strong>
+                <input id="cars" name="cars" class="cars form-control">
             </div>
 
             <div class="col-7 row productsholder d-none">
               <div class="col-12 d-flex">
                 <!-- <button class="btn bg-darkblue text-white">+</button> -->
-                <select class="resultsholderbonsortie mb-2 form-select " style="width: 100%;" id="productsselect2">
-
-                </select>
-
+                <input class="resultsholderbonsortie mb-2 form-select " style="width: 100%;" id="productsselect2">
               </div>
               <div class="col-3">
                 <input type="number" class="form-control" onkeyup="checkmax(event)" placeholder="Quantité" name="addqty">
@@ -132,7 +126,7 @@
             <table class="table table-bordered text-center bonsortiecreation">
               <thead style="background: orange; color:#091b27;">
                   <tr>
-                      <td style="padding: 2px 0; font-size: 13px; width: 9%;">REF</td>
+                      <!-- <td style="padding: 2px 0; font-size: 13px; width: 9%;">REF</td> -->
                       <td style="padding: 2px 0; font-size: 13px;">Article</td>
                       <td style="padding: 2px 0; font-size: 13px; width: 9%;">Dernier Pr.</td>
                       <!-- <td style="padding: 2px 0; font-size: 13px;">Stock</td> -->
@@ -247,7 +241,7 @@
         ajax: {
           type:'get',
           dataType: 'json',
-          url: '/products/searchclient?target=s',
+          url: '/products/searchclient?target={{target}}',
           data: function (params) {
             var query = {
               term: params.term,
@@ -320,6 +314,9 @@
       }
 
   function addrowbonsortie(event){
+    let id=0
+    let dp=0
+    let netprice=0
         let target=$(event.target)
         farah=target.attr('farah')
         parentdiv=target.parent().parent().parent().parent()
@@ -328,7 +325,7 @@
         // $('.resultsholderbonsortie').val('').trigger('change')
         // ids of products in bon stored in localstorage
         let bonachatbody = parentdiv.find('.bonsortiebody')
-        let addname=parentdiv.find('[name="addname"]')
+        let addname=parentdiv.find('.resultsholderbonsortie')
         let addqty=parentdiv.find('[name="addqty"]')
         let max=addqty.attr('max')
         let addprice=parentdiv.find('[name="addprice"]')
@@ -343,26 +340,26 @@
         //   alertify.error('Qty invalid')
           
         // }
-        var [ref, name, dp, stockfarah, stockfacturefarah, stockorgh, stockfactureorgh, id, sellprice, remise, netprice, representprice] = addname.attr('data').split('§');
+        //var [ref, name, dp, stockfarah, stockfacturefarah, stockorgh, stockfactureorgh, id, sellprice, remise, netprice, representprice] = addname.attr('data').split('§');
         //console.log(ref, name, dp, stock, id, sellprice, remise, netprice, representprice)
         pdcts=JSON.parse(localStorage.getItem('pdctsinbonsortie')) || []
-        console.log(id, pdcts, pdcts.includes(id))
+        //console.log(id, pdcts, pdcts.includes(id))
         // distinguished id will be an id to store in ids local
         distid=farah=='1'?'f'+id:'o'+id
-        if (pdcts.includes(distid)){
-          parentdiv.find('.addstock').val('')
-          parentdiv.find('.addstockfacture').val('')
-          addqty.val('')
-          addname.val('')
-          addremise.val('')
-          addprice.val('')
-          $('.addstock').text('')
-          $('.addstockfacture').text('')
-          alertify.error('Ce produit est deja dans le bon')
-          $('.resultsholderbonsortie').select2('open')
+        // if (pdcts.includes(distid)){
+        //   parentdiv.find('.addstock').val('')
+        //   parentdiv.find('.addstockfacture').val('')
+        //   addqty.val('')
+        //   addname.val('')
+        //   addremise.val('')
+        //   addprice.val('')
+        //   $('.addstock').text('')
+        //   $('.addstockfacture').text('')
+        //   alertify.error('Ce produit est deja dans le bon')
+        //   $('.resultsholderbonsortie').select2('open')
 
-          return
-        }
+        //   return
+        // }
 
         // here is the case if qty is greater than stock
         //console.log(addqty.val(), stock)
@@ -450,19 +447,17 @@
         //   );
         //   return
         // }
-
+        
         pdcts.push(distid)
         localStorage.setItem('pdctsinbonsortie', JSON.stringify(pdcts))
         afterremise=parseFloat(addprice.val())*parseFloat(addremise.val())/100
-        console.log(afterremise)
         let net=(parseFloat(addprice.val())-(parseFloat(addprice.val())*parseFloat(addremise.val())/100))
-        console.log(net)
         let addtotal=(parseFloat(addqty.val())*parseFloat(net)).toFixed(2)
         // ${stock<=0? "text-danger":"" }"
+        // <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${id})">${farah=='1'?'(FR)':'(OR)'} ${ref}</td>
         let tr = `
         <tr class="itemrow" productid=${id} farah=${farah}>
-            <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${id})">${farah=='1'?'(FR)':'(OR)'} ${ref}</td>
-            <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${name}</td>
+            <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${addname.val()}</td>
             <td style="paddingpx 0; font-size: 13px;" class="dp">${dp}</td>
             <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${priceclient}</td>
             <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event); checkmax(event); updateinlocalstorage(event, 'bonsortie', ${id})" max=${max} name="qty" value="${addqty.val()}" style="height:23px; width:100%;"></td>
@@ -483,9 +478,9 @@
           'remise': addremise.val(),
           'total': addtotal,
           'name': name,
-          'ref': `${farah=='1'?'(FR)':'(OR)'} ${ref}`,
+          'ref': '--',
           'dp': dp,
-          'stock': stockfarah,
+          'stock': 0,
           'clientprice': priceclient,
           'netprice': netprice
         }
@@ -525,49 +520,49 @@
         //$.get('products/getclientrep/'+$(this).val(), function(data){
         //  $('.repsselectsbl').val(data.id).trigger('change')
         //})
-        $('#productsselect2').select2({
+      //   $('#productsselect2').select2({
 
 
-        ajax: {
-          type:'get',
-          dataType: 'json',
-          url: '/products/searchproductbonsortie?target={{target}}',
-          data: function (params) {
-            var query = {
-              term: params.term,
-            }
-            // Query parameters will be ?search=[term]&type=public
-            return query;
-          },
-          proccessresults: function (data) {
-              return {
-                results:data.results
-              }
-          },
-          cache:true
-        },
-        minimumInputLength: 2,
-        placeholder:'Chercher Produits',
-        templateResult: formatRepo,
-        templateSelection: formatRepoSelection,
-      });
-        function formatRepo (repo) {
-          if (repo.loading) {
-            return repo.text;
-          }
-          console.log('>>> repo', repo)
-          var $container = $(
-            `<div class="d-flex justify-content-between align-items-center"><strong style="color:${repo.stock>0?"blue":"red"};">${repo.text}</strong> <div><img src="${repo.image}" style="width:13%;">${repo.mark}</div></div>`
-            );
+      //   ajax: {
+      //     type:'get',
+      //     dataType: 'json',
+      //     url: '/products/searchproductbonsortie?target={{target}}',
+      //     data: function (params) {
+      //       var query = {
+      //         term: params.term,
+      //       }
+      //       // Query parameters will be ?search=[term]&type=public
+      //       return query;
+      //     },
+      //     proccessresults: function (data) {
+      //         return {
+      //           results:data.results
+      //         }
+      //     },
+      //     cache:true
+      //   },
+      //   minimumInputLength: 2,
+      //   placeholder:'Chercher Produits',
+      //   templateResult: formatRepo,
+      //   templateSelection: formatRepoSelection,
+      // });
+      //   function formatRepo (repo) {
+      //     if (repo.loading) {
+      //       return repo.text;
+      //     }
+      //     console.log('>>> repo', repo)
+      //     var $container = $(
+      //       `<div class="d-flex justify-content-between align-items-center"><strong style="color:${repo.stock>0?"blue":"red"};">${repo.text}</strong> <div><img src="${repo.image}" style="width:13%;">${repo.mark}</div></div>`
+      //       );
 
 
 
-            return $container;
-        }
+      //       return $container;
+      //   }
 
-        function formatRepoSelection (repo) {
-          return repo.text;
-        }
+      //   function formatRepoSelection (repo) {
+      //     return repo.text;
+      //   }
       
       }//end else
 
@@ -585,49 +580,49 @@
           // }
           $('.oldbonswarning').removeClass('d-none').text('Sold: '+data.soldtotal.toFixed(2)+' HD')
         })
-        $('#productsselect2').select2({
+      //   $('#productsselect2').select2({
 
 
-        ajax: {
-          type:'get',
-          dataType: 'json',
-          url: '/products/searchproductbonsortie?target={{target}}',
-          data: function (params) {
-            var query = {
-              term: params.term,
-            }
-            // Query parameters will be ?search=[term]&type=public
-            return query;
-          },
-          proccessresults: function (data) {
-              return {
-                results:data.results
-              }
-          },
-          cache:true
-        },
-        minimumInputLength: 2,
-        placeholder:'Chercher Produits',
-        templateResult: formatRepo,
-        templateSelection: formatRepoSelection,
-      });
-      function formatRepo (repo) {
-          if (repo.loading) {
-            return repo.text;
-          }
+      //   ajax: {
+      //     type:'get',
+      //     dataType: 'json',
+      //     url: '/products/searchproductbonsortie?target={{target}}',
+      //     data: function (params) {
+      //       var query = {
+      //         term: params.term,
+      //       }
+      //       // Query parameters will be ?search=[term]&type=public
+      //       return query;
+      //     },
+      //     proccessresults: function (data) {
+      //         return {
+      //           results:data.results
+      //         }
+      //     },
+      //     cache:true
+      //   },
+      //   minimumInputLength: 2,
+      //   placeholder:'Chercher Produits',
+      //   templateResult: formatRepo,
+      //   templateSelection: formatRepoSelection,
+      // });
+      // function formatRepo (repo) {
+      //     if (repo.loading) {
+      //       return repo.text;
+      //     }
 
-          console.log('>>> repo', repo)
-          var $container = $(
-            `<div class="row"><strong class="col-10" style="color:${repo.stock>0?"blue":"red"};">${repo.text}</strong> <div class="col-2"><img src="${repo.image}" style="width:100%;">${repo.mark}</div></div>`
-            );
+      //     console.log('>>> repo', repo)
+      //     var $container = $(
+      //       `<div class="row"><strong class="col-10" style="color:${repo.stock>0?"blue":"red"};">${repo.text}</strong> <div class="col-2"><img src="${repo.image}" style="width:100%;">${repo.mark}</div></div>`
+      //       );
 
 
-            return $container;
-        }
+      //       return $container;
+      //   }
 
-        function formatRepoSelection (repo) {
-          return repo.text;
-        }
+      //   function formatRepoSelection (repo) {
+      //     return repo.text;
+      //   }
       
         
       // if ($(this).val()==''||$('.repsselectsbl').val()==''){
@@ -709,30 +704,30 @@
       $('.clientselectbl').select2('open')
       // get products from localstorage
       pdcts=JSON.parse(localStorage.getItem('bonsortie')) || []
-      total=localStorage.getItem('totalbonsortie') || 0
-      parentdiv=$('.bonsortiebody')
-      for (let i=0; i<pdcts.length; i++){
-        item=pdcts[i]
-        let tr = `
-        <tr class="itemrow ${item.stock<=0? "text-danger":"" }" productid=${item.id} farah=${item.farah}>
-            <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${item.id})">${item.ref}</td>
-            <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${item.name}</td>
-            <td style="paddingpx 0; font-size: 13px;" class="dp">${item.dp}</td>
-            <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${item.clientprice}</td>
-            <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event); checkmax(event); updateinlocalstorage(event, 'bonsortie', ${item.id})" max=${item.max} name="qty" value="${item.qty}" style="height:23px; width:100%;"></td>
-            <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notemptylivraison" onkeyup="calculate(event); updateinlocalstorage(event, 'bonsortie', ${item.id})" name="price" value="${item.price}" step=0.01 style="height:23px; width:100%;"></td>
-            <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise}" class="calculate remise" onkeyup="calculate(event); updateinlocalstorage(event, 'bonsortie', ${item.id})" name="remise" style="height:23px; width:100%;"></td>
-            <td style="padding: 2px 0; font-size: 13px;" class="netprice">${item.netprice}</td>
-            <td style="padding: 2px 0; font-size: 13px;" class="total">${item.total}</td>
-            <input type="hidden" name="productid" value="${item.id}">
+      // total=localStorage.getItem('totalbonsortie') || 0
+      // parentdiv=$('.bonsortiebody')
+      // // <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${item.id})">${item.ref}</td>
+      // for (let i=0; i<pdcts.length; i++){
+      //   item=pdcts[i]
+      //   let tr = `
+      //   <tr class="itemrow ${item.stock<=0? "text-danger":"" }" productid=${item.id} farah=${item.farah}>
+      //       <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${item.name}</td>
+      //       <td style="paddingpx 0; font-size: 13px;" class="dp">${item.dp}</td>
+      //       <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${item.clientprice}</td>
+      //       <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event); checkmax(event); updateinlocalstorage(event, 'bonsortie', ${item.id})" max=${item.max} name="qty" value="${item.qty}" style="height:23px; width:100%;"></td>
+      //       <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notemptylivraison" onkeyup="calculate(event); updateinlocalstorage(event, 'bonsortie', ${item.id})" name="price" value="${item.price}" step=0.01 style="height:23px; width:100%;"></td>
+      //       <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${item.remise}" class="calculate remise" onkeyup="calculate(event); updateinlocalstorage(event, 'bonsortie', ${item.id})" name="remise" style="height:23px; width:100%;"></td>
+      //       <td style="padding: 2px 0; font-size: 13px;" class="netprice">${item.netprice}</td>
+      //       <td style="padding: 2px 0; font-size: 13px;" class="total">${item.total}</td>
+      //       <input type="hidden" name="productid" value="${item.id}">
 
-        </tr>
-        `
-        parentdiv.prepend(tr)
-      }
-      $('.totalbon').text(total)
+      //   </tr>
+      //   `
+      //   parentdiv.prepend(tr)
+      // }
+      // $('.totalbon').text(total)
       
-      console.log(pdcts)
+      // console.log(pdcts)
 
     })
         // fill today's date in .datebon input
@@ -765,16 +760,16 @@
           let addprice=$(this).parent().parent().find('input[name="addprice"]')
           let addremise=$(this).parent().parent().find('input[name="addremise"]')
           let addqty=$(this).parent().parent().find('input[name="addqty"]')
-          if (term.startsWith('fr-')){
-            addqty.attr('max', stocktotalfarah)
-            // add a sign to addrowbtn to use it when adding row #sfefr435
-            // 1 means thsi product is a farah product
-            $('.addrowbtn').attr('farah', 1)
-          }else{
-            addqty.attr('max', stocktotalorgh)
-            $('.addrowbtn').attr('farah', 0)
+          // if (term.startsWith('fr-')){
+          //   addqty.attr('max', stocktotalfarah)
+          //   // add a sign to addrowbtn to use it when adding row #sfefr435
+          //   // 1 means thsi product is a farah product
+          //   $('.addrowbtn').attr('farah', 1)
+          // }else{
+          //   addqty.attr('max', stocktotalorgh)
+          //   $('.addrowbtn').attr('farah', 0)
 
-          }
+          // }
           let repswithprice=[]
           
           // display stock
@@ -785,7 +780,7 @@
           addprice.val(0)
           addremise.val(0)
           // addremise.val(remise)
-          addname.val(`${ref} - ${name}`).attr('data', `${ref}§${name}§${dp}§${stocktotalfarah}§${stockfacturefarah}§${stocktotalorgh}§${stockfactureorgh}§${id}§${sellprice}§${remise}§${netprice}§${representprice}`)
+          addname.val('--')
           $.get('/products/getqtyprice',
             {
               'term':term,
@@ -795,8 +790,8 @@
             function(data){
               $('.producthistory').html(data)
           })
-          $('.addstock').text('Stock farah: '+stocktotalfarah)
-          $('.addstockfacture').text('Stock orgh: '+stocktotalorgh)
+          // $('.addstock').text('Stock farah: '+stocktotalfarah)
+          // $('.addstockfacture').text('Stock orgh: '+stocktotalorgh)
           // we are getting ere list of reps that have price
           
           $.ajax({

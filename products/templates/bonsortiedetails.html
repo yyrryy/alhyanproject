@@ -6,9 +6,9 @@
       <button class="btn w-100 btn-primary mb-2" onclick="printsortie2('{{order.id}}')">
         Imprimer (A5)
       </button>
-      <button class="btn w-100 btn-primary mb-2" onclick="printsortieA6('{{order.id}}')">
-        Imprimer (A6)
-      </button>
+      <!-- <button class="btn w-100 btn-primary mb-2" onclick="printsortieA6('{{order.id}}')">
+        Imprimer ("A6")
+      </button> -->
 
     </div>
     
@@ -18,9 +18,9 @@
     </button>
     {% endif %} -->
     {% if not order.generated and not order.ispaid %}
-    <button class="btn w-100 bg-orange text-white mt-2" onclick="ajaxpage('modifierlivraison{{order.id}}', 'Modifier {{order.bon_no}}', '/products/modifierbonsortie?id={{order.id}}')">
+    <!-- <button class="btn w-100 bg-orange text-white mt-2" onclick="ajaxpage('modifierlivraison{{order.id}}', 'Modifier {{order.bon_no}}', '/products/modifierbonsortie?id={{order.id}}')">
       Modifier
-    </button>
+    </button> -->
     {% endif %}
 
     <!-- <button class="btn btn-sm bg-darkblue text-white w-100 mt-2" onclick="hidetettebl()">
@@ -48,9 +48,9 @@
     </div>
     {% endfor %}
     {% if not order.generated %}
-    <button class="btn w-100 btn-success" style="margin-top: 15em;" onclick="validatebonsortie(event, '{{order.id}}')">
+    <!-- <button class="btn w-100 btn-success" style="margin-top: 15em;" onclick="validatebonsortie(event, '{{order.id}}')">
       Valider Bon sortie (prix bon sortie)
-    </button>
+    </button> -->
     <!-- <button class="btn w-100 btn-success mt-2" onclick="validatebonsortieproductprice(event, '{{order.id}}')">
       Valider Bon sortie (prix de produit)
     </button> -->
@@ -155,7 +155,7 @@
           <thead style="background: #c9c9c967; font-size: 10px;
         font-weight: 800;" class="text-center">
             <tr>
-              <td style="">Ref</td>
+              <!-- <td style="">Ref</td> -->
               <td style="width:53%;">Designation</td>
               <td style="width: 5%;">Qté</td>
               <td style="width: 7%;">P.U</td>
@@ -165,17 +165,17 @@
           </thead>
           <tbody>
             <tr>
-              <td style="height: 190mm;white-space: nowrap;">
+              <td hidden style="height: 190mm;white-space: nowrap;">
                   {% for v in i %}
 
                   {{v.product.ref.upper}} ({% if v.isfarah %}FR {% else %}OR{% endif %})
                   <br>
                   {% endfor %}
               </td>
-              <td style="white-space: nowrap;">
+              <td style="white-space: nowrap; height: 190mm">
                   {% for v in i %}
 
-                  {{v.product.name.upper|slice:'45'}}
+                  {{v.name.upper|slice:'45'}}
                   <br>
                   {% endfor %}
               </td>
@@ -294,17 +294,17 @@
           </thead>
           <tbody>
             <tr>
-              <td style="height: 150mm;white-space: nowrap;">
+              <td hidden style="height: 150mm;white-space: nowrap;">
                   {% for v in i %}
 
                   {{v.product.ref.upper}} ({% if v.isfarah %}FR{% else %}OR{% endif %})
                   <br>
                   {% endfor %}
                   </td>
-                <td style="white-space: nowrap;">
+                <td style="white-space: nowrap; height: 150mm;">
                   {% for v in i %}
 
-                  {{v.product.name.upper|slice:'45'}}
+                  {{v.name.upper|slice:'45'}}
                   <br>
                   {% endfor %}
               </td>

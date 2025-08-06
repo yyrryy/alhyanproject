@@ -100,6 +100,7 @@ def bonsortie(request):
     # else increment it by one
 
     # increment it
+    target=request.GET.get('target', 's')
     year = timezone.now().strftime("%y")
     latest_receipt = Bonsortie.objects.filter(
         bon_no__startswith=f'BS{year}'
@@ -117,6 +118,7 @@ def bonsortie(request):
     return render(request, 'bonsortie.html', {
         'title':'Bon de Sortie',
         'cars':Carlogos.objects.all().order_by('id'),
+        'target':target,
         'caisses':Caisse.objects.filter(target='s'),
         # 'clients':Client.objects.all(),
         # # 'products':Produit.objects.all(),
@@ -185,14 +187,14 @@ def addbonsortie(request):
     with transaction.atomic():
         for i in json.loads(products):
             farah=i['farah']=='1'
-            product=Produit.objects.get(pk=i['productid'])
+            #product=Produit.objects.get(pk=i['productid'])
             #create sortie items
             sortitem=Sortieitem.objects.create(
                 bon=order,
                 remise=i['remise'],
                 name=i['name'],
                 ref=i['ref'],
-                product=product,
+                #product=product,
                 qty=i['qty'],
                 price=i['price'],
                 total=i['total'],
@@ -201,31 +203,6 @@ def addbonsortie(request):
                 isfarah=farah,
             )
         
-            # update stock accordinly
-            if farah:
-                product.stocktotalfarah=float(product.stocktotalfarah)-float(i['qty'])
-                # negative=json.loads(product.frnegative)
-                # sorties=json.loads(product.frsorties)
-                # if float(product.stocktotalfarah)-float(i['qty'])<0:
-                #     product.isnegativeinfr=True
-                #     negative.append(float(i['qty'])-float(product.stocktotalfarah))
-                #     sorties.append(sortitem.id)
-                #     product.frnegative=negative
-                #     product.frsorties=sorties
-            
-            else:
-                negative=json.loads(product.negative)
-                sorties=json.loads(product.sorties)
-                product.stocktotalorgh=float(product.stocktotalorgh)-float(i['qty'])
-                # negative=json.loads(product.negative)
-                # sorties=json.loads(product.sorties)
-                # if float(product.stocktotalorgh)-float(i['qty'])<0:
-                #     product.isnegative=True
-                #     negative.append(float(i['qty'])-float(product.stocktotalfarah))
-                #     sorties.append(sortitem.id)
-                # product.negative=negative
-                # product.sorties=sorties
-            product.save()
             
             # update prices accordinly
             # pri lli7diffo' d mnchk addifo4n 4kola pri
@@ -758,7 +735,6 @@ def suppliersection(request):
 def bonsortiedetails(request, id):
     order=Bonsortie.objects.get(pk=id)
     orderitems=Sortieitem.objects.filter(bon=order).order_by('product__name')
-    print('orderitems', orderitems)
     #reglements=PaymentClientbl.objects.filter(bons__in=[order])
     orderitems=list(orderitems)
     orderitems=[orderitems[i:i+34] for i in range(0, len(orderitems), 34)]

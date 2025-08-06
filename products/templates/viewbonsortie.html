@@ -890,7 +890,7 @@ a .uil {
           <thead style="background: #c9c9c967; font-size: 10px;
         font-weight: 800;" class="text-center">
             <tr>
-              <td style="">Ref</td>
+              <td hidden style="">Ref</td>
               <td style="width:53%;">Designation</td>
               <td style="width: 5%;">Qté</td>
               <td style="width: 7%;">P.U</td>
@@ -900,17 +900,17 @@ a .uil {
           </thead>
           <tbody>
             <tr>
-              <td style="height: 190mm;white-space: nowrap;">
+              <td hidden style="height: 190mm;white-space: nowrap;">
                   {% for v in i %}
 
                   {{v.product.ref.upper}} ({% if v.isfarah %}FR{% else %}OR{% endif %})
                   <br>
                   {% endfor %}
               </td>
-              <td style="white-space: nowrap;">
+              <td style="height: 190mm;white-space: nowrap;">
                   {% for v in i %}
 
-                  {{v.product.name.upper|slice:'45'}}
+                  {{v.name.upper|slice:'45'}}
                   <br>
                   {% endfor %}
               </td>
@@ -1029,17 +1029,17 @@ a .uil {
           </thead>
           <tbody>
             <tr>
-              <td style="height: 150mm;white-space: nowrap;">
+              <td hidden style="height: 150mm;white-space: nowrap;">
                   {% for v in i %}
 
                   {{v.product.ref.upper}} ({% if v.isfarah %}FR{% else %}OR{% endif %})
                   <br>
                   {% endfor %}
                   </td>
-                <td style="white-space: nowrap;">
+                <td style="height: 150mm;white-space: nowrap;">
                   {% for v in i %}
 
-                  {{v.product.name.upper|slice:'45'}}
+                  {{v.name.upper|slice:'45'}}
                   <br>
                   {% endfor %}
               </td>

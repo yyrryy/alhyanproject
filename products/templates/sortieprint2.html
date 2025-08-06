@@ -51,11 +51,9 @@
     <div class="px-2 d-flex flex-column postion-relative livraison{{order.id}}holder p-3" style="height: {% if A6 %}14.8cm{% else %}21cm{%endif%};width: {%if A6 %}10.5cm{%else%}14.8cm{%endif%}; margin:auto;">
       <!-- header -->
       <div class="row">
-        <div class="col-3">
-          <img src="/media/facturebody.jpg" style="width: 100%;" alt="">
-        </div>
+        
 
-        <div class="col-9">
+        <div>
           <div class="d-flex justify-content-between">
             <div>
               </strong>BS N°: {{ order.bon_no }}</strong>
@@ -63,19 +61,13 @@
             <div>
               <strong>{{ order.date|date:"d/m/Y" }}</strong>
             </div>
-            
-          </div>
-
-          <div class="d-flex justify-content-between">
             <div>
               <strong>Client: {{order.client.name.upper}}</strong>
             </div>
-            <div>
-              <strong>Client: {{order.client.code.upper}}</strong>
-            </div>
-            
             
           </div>
+
+         
 
 
           <div class="">
@@ -119,7 +111,7 @@
               <td style="white-space: nowrap; padding:3px">
                   {% for v in i %}
 
-                  {{v.product.category.name.upper}}
+                  {{v.name.upper}}
                   <br>
                   {% endfor %}
               </td>
@@ -192,9 +184,7 @@
         </div>
 
       </div>
-      <p>
-        عدم تجاوز أسبوع لإرجاع البضاعة و شكرا
-      </p>
+      
     </div>
 
     {% else %}
@@ -202,11 +192,9 @@
     <div class="px-2 d-flex flex-column postion-relative livraison{{order.id}}holder p-3" style="height: {% if A6 %}14.8cm{% else %}21cm{%endif%};width: {%if A6 %}10.5cm{%else%}14.8cm{%endif%}; margin:auto;">
       <!-- header -->
       <div class="row">
-        <div class="col-3">
-          <img src="/media/facturebody.jpg" style="width: 100%;" alt="">
-        </div>
+        
 
-        <div class="col-9">
+        <div>
           <div class="d-flex justify-content-between">
             <div>
               </strong>BS N°: {{ order.bon_no }}</strong>
@@ -214,19 +202,13 @@
             <div>
               <strong>{{ order.date|date:"d/m/Y" }}</strong>
             </div>
-            
-          </div>
-
-          <div class="d-flex justify-content-between">
             <div>
               <strong>Client: {{order.client.name.upper}}</strong>
             </div>
-            <div>
-              <strong>Client: {{order.client.code.upper}}</strong>
-            </div>
-            
             
           </div>
+
+          
 
 
           <div class="">
@@ -276,7 +258,7 @@
               <td style="white-space: nowrap; padding:3px">
                   {% for v in i %}
 
-                  {{v.product.category.name.upper}}
+                  {{v.name.upper}}
                   <br>
                   {% endfor %}
               </td>
@@ -315,9 +297,7 @@
           page: {{forloop.counter}}/{{orderitems|length}}
         </small>
       </div>
-      <p>
-        عدم تجاوز أسبوع لإرجاع البضاعة و شكرا
-      </p>
+      
     </div>
     {% endif %}
   </div>

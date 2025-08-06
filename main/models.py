@@ -1263,7 +1263,7 @@ class Sortieitem(models.Model):
     isavoir=models.BooleanField(default=False)
     date=models.DateField(default=None, null=True, blank=True)
     def __str__(self) -> str:
-        return f'{self.bon.bon_no} - {self.product.ref}'
+        return f'{self.bon.bon_no}'
 
 class Factureachat(models.Model):
     target=models.CharField(max_length=500, default=None, null=True, blank=True)

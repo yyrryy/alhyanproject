@@ -13,14 +13,13 @@
 </style>
 <div class="tabsholder expended" style="width: 100%;">
   <div class="px-2 d-flex justify-content-between border-bottom align-items-center bg-success text-white align-items-center">
-    
 
     <div class="d-flex">
       <button class="bi bi-house btn text-white" onclick="ajaxpage('ee', 'e', '/products/listbonlivraison?target=f')"></button>
       
       <!-- stock -->
       <div onmouseover="$(this).find('.dropdown-menu').show()" onmouseleave="$(this).find('.dropdown-menu').hide()">
-        <a class="btn bi bi-people-fill d-flex flex-column btn p-2 text-white sectionbtn position-relative" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="btn bi bi-box d-flex flex-column btn p-2 text-white sectionbtn position-relative" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Stock
         </a>
       
@@ -171,7 +170,11 @@
       <div class="d-flex flex-column btn p-2 bi bi-cart-plus-fill text-white sectionbtn position-relative" onclick="ajaxpage('addpducts', 'ARTICLES', '/products/caissepage?target=f')">
         <small>Gestion Finance</small>
       </div>
-
+      
+      <div class="d-flex flex-column btn p-2 bi bi-list text-white sectionbtn position-relative" onclick="ajaxpage('addpducts', 'ARTICLES', '/products/listbonsortie?target=f')">
+        <small>Bon sortie</small>
+      </div>
+      
       
     </div>
     
