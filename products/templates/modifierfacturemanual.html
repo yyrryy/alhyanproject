@@ -848,7 +848,7 @@
           parentdiv.find('.updatebonsortie').addClass('disabled')
           console.log(payment)
           $.ajax({
-              url: "{% url 'products:updatebonsortie' %}",
+              url: "{% url 'products:updatefacturemanual' %}",
               type: 'POST',
               data: {
                 'bonid':'{{bon.id}}',

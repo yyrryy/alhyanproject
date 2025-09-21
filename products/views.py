@@ -1332,6 +1332,96 @@ def addfacture(request):
         'success':True
     })
 
+def addfacturemanual(request):
+    year=timezone.now().strftime("%y")
+    clientid=request.POST.get('clientid')
+    target=request.POST.get('target')
+    products=request.POST.get('products')
+    totalbon=request.POST.get('totalbon')
+    # orderno
+    transport=request.POST.get('transport', '')
+    note=request.POST.get('note', '')
+    #orderno=request.POST.get('orderno')
+    datebon=request.POST.get('datebon')
+    datebon=datetime.strptime(datebon, '%Y-%m-%d')
+    client=Client.objects.get(pk=clientid)
+    isfarah=False
+    isorgh=False
+    if target=='f':
+        isfarah=True
+        latest_receipt = Facture.objects.filter(
+            facture_no__startswith=f'S-FC{year}'
+        ).last()
+        # latest_receipt = Bonsortie.objects.filter(
+        #     facture_no__startswith=f'S-BL{year}'
+        # ).order_by("-bon_no").first()
+        if latest_receipt:
+            latest_receipt_no = int(latest_receipt.facture_no[-9:])
+            receipt_no = f"S-FC{year}{latest_receipt_no + 1:09}"
+        else:
+            receipt_no = f"S-FC{year}000000001"
+    else:
+        isorgh=True
+        latest_receipt = Facture.objects.filter(
+            facture_no__startswith=f'FC{year}'
+        ).last()
+        # latest_receipt = Bonsortie.objects.filter(
+        #     facture_no__startswith=f'S-BL{year}'
+        # ).order_by("-bon_no").first()
+        if latest_receipt:
+            latest_receipt_no = int(latest_receipt.facture_no[-9:])
+            receipt_no = f"FC{year}{latest_receipt_no + 1:09}"
+        else:
+            receipt_no = f"FC{year}000000001"
+    client.soldtotal=round(float(client.soldtotal)+float(totalbon), 2)
+    client.soldfacture=round(float(client.soldfacture)+float(totalbon), 2)
+    client.save()
+    tva=round(float(totalbon)-(float(totalbon)/1.2), 2)
+    year = timezone.now().strftime("%y")
+
+    print('>>>>>>>',latest_receipt)
+    facture=Facture.objects.create(
+        facture_no=receipt_no,
+        total=totalbon,
+        tva=tva,
+        date=datebon,
+        client_id=clientid,
+        transport=transport,
+        note=note,
+        isfarah=isfarah
+    )
+    if len(json.loads(products))>0:
+        with transaction.atomic():
+            for i in json.loads(products):
+                # product=Produit.objects.get(pk=i['productid'])
+                # if isfarah:
+                #     product.stockfacture=int(product.stockfacture)-int(i['qty'])
+                # product.save()
+                Outfacture.objects.create(
+                    facture=facture,
+                    remise=i['remise'],
+                    name=i['name'],
+                    ref=i['ref'],
+                    #product=product,
+                    qty=i['qty'],
+                    price=i['price'],
+                    total=i['total'],
+                    client_id=clientid,
+                    date=datebon,
+                )
+
+    # year = timezone.now().strftime("%y")
+    # latest_receipt = Facture.objects.filter(
+    #     facture_no__startswith=f'FC{year}'
+    # ).order_by("-facture_no").first()
+    # latest_receipt_no = int(latest_receipt.facture_no[-5:])
+    # receipt_no = f"FC{year}{latest_receipt_no + 1:05}"
+
+    # increment it
+    return JsonResponse({
+        'success':True
+    })
+
 
 
 def supplierinfo(request, id):
@@ -4462,8 +4552,8 @@ def updatebonachat(request):
                     product.frremise2=0 if i['remise2']=="" else i['remise2']
                     product.frremise3=0 if i['remise3']=="" else i['remise3']
                     product.frremise4=0 if i['remise4']=="" else i['remise4']
-                    product.frsellprice=0 if i['price']=="" else i['price']
-                    product.frremisesell=0 if i['remise1']=="" else i['remise1']
+                    # product.frsellprice=0 if i['price']=="" else i['price']
+                    # product.frremisesell=0 if i['remise1']=="" else i['remise1']
                     product.frnetbuyprice=netprice
                     product.froriginsupp=supplier
             else:
@@ -4491,8 +4581,8 @@ def updatebonachat(request):
                     product.remise2=0 if i['remise2']=="" else i['remise2']
                     product.remise3=0 if i['remise3']=="" else i['remise3']
                     product.remise4=0 if i['remise4']=="" else i['remise4']
-                    product.sellprice=0 if i['price']=="" else i['price']
-                    product.remisesell=0 if i['remise1']=="" else i['remise1']
+                    # product.sellprice=0 if i['price']=="" else i['price']
+                    # product.remisesell=0 if i['remise1']=="" else i['remise1']
                     product.netbuyprice=netprice
                     product.originsupp=supplier
 
@@ -4610,8 +4700,8 @@ def updatefactureachat(request):
                 product.frremise2=0 if i['remise2']=="" else i['remise2']
                 product.frremise3=0 if i['remise3']=="" else i['remise3']
                 product.frremise4=0 if i['remise4']=="" else i['remise4']
-                product.frsellprice=0 if i['price']=="" else i['price']
-                product.frremisesell=0 if i['remise1']=="" else i['remise1']
+                # product.frsellprice=0 if i['price']=="" else i['price']
+                # product.frremisesell=0 if i['remise1']=="" else i['remise1']
                 product.frnetbuyprice=netprice
             else:
                 product.buyprice=0 if i['price']=="" else i['price']
@@ -4619,8 +4709,8 @@ def updatefactureachat(request):
                 product.remise2=0 if i['remise2']=="" else i['remise2']
                 product.remise3=0 if i['remise3']=="" else i['remise3']
                 product.remise4=0 if i['remise4']=="" else i['remise4']
-                product.sellprice=0 if i['price']=="" else i['price']
-                product.remisesell=0 if i['remise1']=="" else i['remise1']
+                # product.sellprice=0 if i['price']=="" else i['price']
+                # product.remisesell=0 if i['remise1']=="" else i['remise1']
                 product.netbuyprice=netprice
             product.save()
 

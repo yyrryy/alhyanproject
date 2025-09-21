@@ -2540,64 +2540,64 @@ def updatebonsortie(request):
     items=Sortieitem.objects.filter(bon=bon)
     #initiate stock and price history
     for i in items:
-        product=i.product
-        # stock
-        if i.isfarah:
-            product.stocktotalfarah=float(product.stocktotalfarah)+float(i.qty)
-        else:
-            product.stocktotalorgh=float(product.stocktotalorgh)+float(i.qty)
-        product.save()
-        #print('>> qtyofprice, qties', json.loads(i.pricesofout), json.loads(i.qtyofout))
-        # prices and qties of prices
-        # for pr, qty in zip(json.loads(i.pricesofout), json.loads(i.qtyofout)):
-        #     st=Stockin.objects.get(pk=pr)
-        #     st.qtyofprice+=qty
-        #     st.save()
+    #     product=i.product
+    #     # stock
+    #     if i.isfarah:
+    #         product.stocktotalfarah=float(product.stocktotalfarah)+float(i.qty)
+    #     else:
+    #         product.stocktotalorgh=float(product.stocktotalorgh)+float(i.qty)
+    #     product.save()
+    #     #print('>> qtyofprice, qties', json.loads(i.pricesofout), json.loads(i.qtyofout))
+    #     # prices and qties of prices
+    #     # for pr, qty in zip(json.loads(i.pricesofout), json.loads(i.qtyofout)):
+    #     #     st=Stockin.objects.get(pk=pr)
+    #     #     st.qtyofprice+=qty
+    #     #     st.save()
         i.delete()
 
     with transaction.atomic():
         for i in json.loads(products):
-            farah=i['farah']=='1'
-            product=Produit.objects.get(pk=i['productid'])
+            #farah=i['farah']=='1'
+            #product=Produit.objects.get(pk=i['productid'])
             #create sortie items
             sortitem=Sortieitem.objects.create(
                 bon=bon,
                 remise=i['remise'],
                 name=i['name'],
                 ref=i['ref'],
-                product=product,
+                #product=product,
                 qty=i['qty'],
                 price=i['price'],
                 total=i['total'],
                 client_id=clientid,
                 date=datebon,
-                isfarah=farah,
+                isfarah=True,
             )
         
             # update stock accordinly
-            if farah:
-                product.stocktotalfarah=float(product.stocktotalfarah)-float(i['qty'])
-                # negative=json.loads(product.frnegative)
-                # sorties=json.loads(product.frsorties)
-                # if float(product.stocktotalfarah)-float(i['qty'])<0:
-                #     product.isnegativeinfr=True
-                #     negative.append(float(i['qty'])-float(product.stocktotalfarah))
-                #     sorties.append(sortitem.id)
-                # product.frnegative=negative
-                # product.frsorties=sorties
-            else:
-                product.stocktotalorgh=float(product.stocktotalorgh)-float(i['qty'])
-                # negative=json.loads(product.negative)
-                # sorties=json.loads(product.sorties)
-                # negative=json.loads(product.negative)
-                # sorties=json.loads(product.sorties)
-                # if float(product.stocktotalorgh)-float(i['qty'])<0:
-                #     product.isnegative=True
-                #     negative.append(float(i['qty'])-float(product.stocktotalfarah))
-                #     sorties.append(sortitem.id)
-                # product.negative=negative
-                # product.sorties=sorties
-            product.save()
+            # if farah:
+            #     product.stocktotalfarah=float(product.stocktotalfarah)-float(i['qty'])
+            #     # negative=json.loads(product.frnegative)
+            #     # sorties=json.loads(product.frsorties)
+            #     # if float(product.stocktotalfarah)-float(i['qty'])<0:
+            #     #     product.isnegativeinfr=True
+            #     #     negative.append(float(i['qty'])-float(product.stocktotalfarah))
+            #     #     sorties.append(sortitem.id)
+            #     # product.frnegative=negative
+            #     # product.frsorties=sorties
+            # else:
+            #     product.stocktotalorgh=float(product.stocktotalorgh)-float(i['qty'])
+            #     # negative=json.loads(product.negative)
+            #     # sorties=json.loads(product.sorties)
+            #     # negative=json.loads(product.negative)
+            #     # sorties=json.loads(product.sorties)
+            #     # if float(product.stocktotalorgh)-float(i['qty'])<0:
+            #     #     product.isnegative=True
+            #     #     negative.append(float(i['qty'])-float(product.stocktotalfarah))
+            #     #     sorties.append(sortitem.id)
+            #     # product.negative=negative
+            #     # product.sorties=sorties
+            #product.save()
             
             # update prices accordinly
             # pri lli7diffo' d mnchk addifo4n 4kola pri
@@ -3527,3 +3527,9 @@ def downloadallclient(request):
     print(">> counts", clients)
     return render(request, 'downloadcreditclient.html', {'clients':clients, 'target':target, 'today':today})
     
+def facturemanual(request):
+    ctx={
+        'title':'Facture manual',
+        'target':'f'
+    }
+    return render(request, 'facturemanual.html', ctx)
