@@ -21,6 +21,7 @@ set "BACKUP_FILE=%BACKUP_DIR%\backup_!TIMESTAMP!.sql"
 :: === START BACKUP ===
 echo.
 echo [INFO] Starting backup for database "%DATABASE_NAME%" at !TIMESTAMP!...
+set PGPASSFILE=C:\Users\Public\pgpass.conf
 if not exist "%BACKUP_DIR%" (
     echo [INFO] Creating backup directory: "%BACKUP_DIR%"
     mkdir "%BACKUP_DIR%"
