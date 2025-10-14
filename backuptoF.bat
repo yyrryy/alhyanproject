@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 set "DATABASE_NAME=alhyan"
 set "USER=postgres"
 set "BACKUP_DIR=C:\backups"
-set "EXTERNAL_SSD_DRIVE=D:"
+set "EXTERNAL_SSD_DRIVE=E:"
 set "EXTERNAL2=F:"
 set "EXTERNAL3=G:"
 set "PGPASSFILE=C:\Users\Public\pgpass.conf"
