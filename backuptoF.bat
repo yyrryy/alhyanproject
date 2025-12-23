@@ -58,4 +58,3 @@ for %%D in ("%EXTERNAL_SSD_DRIVE%" "%EXTERNAL2%" "%EXTERNAL3%") do (
 echo.
 echo [SUCCESS] Backup and copy operations completed.
 endlocal
-pause
