@@ -206,17 +206,17 @@
             <div>
               <strong>{{ order.date|date:"d/m/Y" }}</strong>
             </div>
-            <div>
-              <strong>Client: {{order.client.name.upper}}</strong>
-            </div>
+            
             
           </div>
 
           
 
 
-          <div class="">
-
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong>Client: {{order.client.name.upper}}</strong>
+            </div>
               <div>
                 <strong>{{ order.note }} {{order.car}}</strong>
               </div>
