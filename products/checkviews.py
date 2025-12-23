@@ -2891,6 +2891,16 @@ def printbulk(request):
     orderitems=[items[i:i+36] for i in range(0, len(items), 36)]
     return render(request, 'printbulk.html', {'bons':bons, 'orderitems':orderitems, 'total':bons.aggregate(Sum('total'))['total__sum'] or 0, 'today':timezone.now().date()})
 
+def reglererbulk(request):
+    year = timezone.now().strftime("%y")
+    ids=json.loads(request.GET.get('ids'))
+    print('>>ids', ids)
+    bons = Bonsortie.objects.filter(pk__in=ids)
+    bons.update(ispaid=True)
+    return JsonResponse({
+        'success':True
+    })
+
 def validerbulk(request):
     year = timezone.now().strftime("%y")
     ids=json.loads(request.GET.get('ids'))
