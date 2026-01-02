@@ -427,6 +427,7 @@ urlpatterns = [
     path('facturemanual', checkviews.facturemanual, name='facturemanual'),
     path('reglererbulk', checkviews.reglererbulk, name='reglererbulk'),
     path('updatefacturenumero', checkviews.updatefacturenumero, name='updatefacturenumero'),
+    
     # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),
     # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),
     # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),

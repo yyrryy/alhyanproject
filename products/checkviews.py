@@ -3315,7 +3315,7 @@ def updatefacturenumero(request):
     facture.save()
     return JsonResponse({
         'success':True
-    })
+    }) 
 
 def payreglementclient(request):
     reglid=request.GET.get('reglid')
