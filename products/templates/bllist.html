@@ -1,73 +1,61 @@
 {% load global_tags %}
 {% for order in bons %}
-    <tr class="ord bl-row " mode="{{mode}}" orderid="{{order.code}}" ondblclick="ajaxpage('bonl{{order.id}}', 'Bon livraison {{order.bon_no}}', '/products/bonlivraisondetails/{{order.id}}?target={{target}}&mode={{mode}}')" style="background:{% if order.isdelivered %}  lightgreen;{% endif %} {% if i.isfacture%} color:blue;{%endif%}" >
-            
-      <td >{{ order.bon_no }}</td>
-      <td >{{ order.date|date:'d/m/Y' }}</td>
-      <td >{{ order.client.name }}</td>
-      <td >{{ order.client.code }}</td>
-      <td style="color: blue;">{{ order.total|floatformat:'2'|intspace}}</td>
-      <td >{{ order.client.city }}</td>
-      <td class="d-flex justify-content-between">
-        {% if order.isfacture %}
-        <div>
-          {{order.facture.facture_no}}
-        </div>
-        <div style="width:15px; height:15px; border-radius:50%; background:green;" ></div>
+<tr class="ord bl-row " orderid="{{order.code}}" ondblclick="ajaxpage('bons{{order.id}}', 'Bon livraison {{order.bon_no}}', '/products/bonsortiedetails/{{order.id}}')" style="background:" >
+  <td >
+    <input type="checkbox" class="checkbon" onchange="addtoprint('{{order.id}}', '{{order.bon_no}}')">
+    {{ order.bon_no }}
+  </td>
+  <td >{{ order.date|date:'d/m/Y' }}</td>
+  <td >{{ order.client.name }}</td>
+  <td >{{ order.client.code }}</td>
+  <td style="color: blue;">{{ order.total|floatformat:'2'|intspace}}
+  </td>
+  
+  <td class="">
+    {% if order.ispaid %}
+    <div  style="text-align: center; background: lightgreen;">
+      Encaissé
+    </div>
+    
 
+    {% else %}
 
-        {% else %}
-
-          
-          <div style="width:15px; height:15px; border-radius:50%; background:orange;" ></div>
-
-        {% endif %}
-      </td>
-      <td class="text-danger">
-        {{order.bonsortie.bon_no}}
-      </td>
+      <div class="" style="text-align: center; background: yellow;">
+        En attend
+      </div>
       
-      <td>
-        {{order.devi.bon_no}}
-      </td>
-      <td>
-        {{order.command.bon_no}}
-      </td>
-      <td>
-        <div class="accordion" id="accordionrr{{order.id}}">
 
-          <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapsrr{{order.id}}" aria-expanded="true" aria-controls="collapsrr{{order.id}}">
+    {% endif %}
+  </td>
 
-            
-          </button>
+  <td class="">
+    {% if order.generated %}
+    <div  style="text-align: center; background: lightgreen;">
+      Valider
+    </div>
+    
 
-          <div id="collapsrr{{order.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionrr{{order.id}}">
-              {{order.note}}
+    {% else %}
 
+      <div class="" style="text-align: center; background: yellow;">
+        No valider
+      </div>
+      
 
-          </div>
-        </div>
-      </td>
-      <td>
-        {% if order.ispaid %}
-        <div  style="text-align: center; background: lightgreen;">
-          Payé
-        </div>
+    {% endif %}
+  </td>
+  
+  <td>
+    {% if order.note %} {{order.note}}-{{order.car}} {% endif %}
+  </td>
+  <td>
+    {% if order.user %} {{order.user.username}} {% endif %}
+  </td>
+  <td class="d-flex">
+    <button class="btn btn-sm bi bi-eye" onclick="viewbonsortie('{{order.id}}')"></button>
+    <button class="btn btn-sm bi bi-download" onclick="printsortie2('{{order.id}}')">A5</button>
+    <button class="btn btn-sm bi bi-download" onclick="printsortieA6('{{order.id}}')">A6</button>
+  </td>
 
-        {% else %}
-        <div class="" style="text-align: center; background: rgb(255, 77, 0);">
-          Non payé
-        </div>
-        {% endif %}
-      </td>
-      <td>
-        {% if order.user %}
-        {{order.user.username}}
-        {% endif %}
-      </td>
-      <td class="d-flex">
-        <!-- <button class="btn btn-sm btn-info" onclick="makedelivered('{{order.id}}', event)"></button> -->
-        <button class="btn btn-sm bi bi-download" onclick="printlivraison('{{order.id}}', '{{target}}')"></button>
-      </td>
-    </tr>
+</tr>
 {% endfor %}
