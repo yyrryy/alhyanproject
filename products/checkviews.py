@@ -3307,6 +3307,16 @@ def updatefacturedate(request):
         'success':True
     })
 
+def updatefacturenumero(request):
+    factureid=request.GET.get('factureid')
+    numero=request.GET.get('numero')
+    facture=Facture.objects.get(pk=factureid)
+    facture.facture_no=numero
+    facture.save()
+    return JsonResponse({
+        'success':True
+    })
+
 def payreglementclient(request):
     reglid=request.GET.get('reglid')
     banktarget=request.GET.get('banktarget')

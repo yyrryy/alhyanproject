@@ -36,16 +36,22 @@
   
   <div id="printfc{{facture.id}}" style="position:relative;">
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <select class="ms-2 updatefactureclient" style="width: 100%;">
         
         </select>
         <button class="btn btn-dark w-100" onclick="updatefactureclient()">Modifier client</button>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <input type="date" class="ms-2 updatefacturedate form-control" value="{{facture.date|date:'Y-m-d'}}">
         
         <button class="btn btn-dark w-100" onclick="updatefacturedate()">Modifier date</button>
+      </div>
+
+      <div class="col-4">
+        <input type="text" class="ms-2 updatefacturenumero form-control" value="{{facture.facture_no}}">
+        
+        <button class="btn btn-dark w-100" onclick="updatefacturenumero()">Modifier numero</button>
       </div>
       
     </div>
@@ -570,6 +576,19 @@
     $.get('/products/updatefacturedate', {
       'factureid':'{{facture.id}}',
       'date':date
+    },(data)=>{
+      ajaxpage('facture2', 'Facture S-FC25000000001', '/products/facturedetails/{{facture.id}}?target={{target}}')
+    }
+  )}
+  function updatefacturenumero(id){
+    numero=$('.updatefacturenumero').val()
+    if (numero==""){
+      alertify.error('Selectionner un client')
+      return
+    }
+    $.get('/products/updatefacturenumero', {
+      'factureid':'{{facture.id}}',
+      'numero':numero
     },(data)=>{
       ajaxpage('facture2', 'Facture S-FC25000000001', '/products/facturedetails/{{facture.id}}?target={{target}}')
     }
