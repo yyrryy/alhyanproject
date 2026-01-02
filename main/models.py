@@ -820,7 +820,7 @@ class Livraisonitem(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True, blank=True)
 
     def __str__(self) -> str:
-        return f'{self.bon.bon_no} - {self.product.ref}'
+        return f'{self.bon.bon_no}'
 
 
 class Avoirclient(models.Model):
