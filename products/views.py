@@ -8410,11 +8410,11 @@ def searchforlistfc(request):
     if startdate=='0' and enddate=='0':
         print('>>>> search list fc, startdate and enddate are 0')
         if waiting:
-            bons=Facture.objects.filter(q_objects).filter(date__year=thisyear, isfarah=isfarah, isvalid=False).order_by('-facture_no')[:50]
-            total=round(Facture.objects.filter(q_objects).filter(date__year=thisyear, isfarah=isfarah, isvalid=False).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
+            bons=Facture.objects.filter(q_objects).filter(isfarah=isfarah, isvalid=False).order_by('-facture_no')[:50]
+            total=round(Facture.objects.filter(q_objects).filter(isfarah=isfarah, isvalid=False).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
         else:
-            bons=Facture.objects.filter(q_objects).filter(date__year=thisyear, isfarah=isfarah, isvalid=True).order_by('-facture_no')[:50]
-            total=round(Facture.objects.filter(q_objects).filter(date__year=thisyear, isfarah=isfarah, isvalid=True).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
+            bons=Facture.objects.filter(q_objects).filter(isfarah=isfarah, isvalid=True).order_by('-facture_no')[:50]
+            total=round(Facture.objects.filter(q_objects).filter(isfarah=isfarah, isvalid=True).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
 
     else:
         if waiting:
@@ -8434,7 +8434,7 @@ def searchforlistfc(request):
     return JsonResponse({
         'trs':render(request, 'fclist.html', {'bons':bons, 'target':target}).content.decode('utf-8'),
         'total':total,
-
+        'target':target
     })
 
 def searchforlistfcachat(request):
