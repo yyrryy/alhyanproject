@@ -6080,9 +6080,10 @@ def filterfcdate(request):
     #       </tr>
     #     '''
     ctx={
-        'trs':render(request, 'fclist.html', {'bons':bons}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bons, 'target':target}).content.decode('utf-8'),
         'total':total,
         'totaltva':totaltva,
+        'target':target
     }
     return JsonResponse(ctx)
     # return JsonResponse({
