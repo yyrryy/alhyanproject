@@ -6080,7 +6080,7 @@ def filterfcdate(request):
     #       </tr>
     #     '''
     ctx={
-        'trs':render(request, 'fclist.html', {'bons':bons, 'target':target}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':target=='f'}).content.decode('utf-8'),
         'total':total,
         'totaltva':totaltva,
         'target':target
@@ -8192,34 +8192,6 @@ def loadlistfc(request):
         # Create a list of Q objects for each search term and combine them with &
         q_objects = Q()
         for term in term.split():
-            # print('>>>>>>>term ', term)
-            # if '-' in term[0]:
-            #     date_range = term.split('-')
-            #     start_date = datetime.strptime(date_range[0].strip(), '%d/%m/%Y')
-            #     end_date = datetime.strptime(date_range[1].strip(), '%d/%m/%Y')
-            #     q_objects &= (
-            #         Q(client__name__iregex=term)|
-            #         Q(client__code__iregex=term)|
-            #         Q(salseman__name__iregex=term)|
-            #         Q(facture_no__iregex=term)|
-            #         Q(bon__bon_no__iregex=term)|
-            #         Q(client__region__iregex=term)|
-            #         Q(client__city__iregex=term)|
-            #         Q(client__code__iregex=term)|
-            #         Q(total__iregex=term)|
-            #         Q(date__range=[start_date, end_date])
-            #         )
-            # else:
-            #     q_objects &= (
-            #         Q(client__name__iregex=term)|
-            #         Q(client__code__iregex=term)|
-            #         Q(salseman__name__iregex=term)|
-            #         Q(facture_no__iregex=term)|
-            #         Q(bon__bon_no__iregex=term)|
-            #         Q(client__region__iregex=term)|
-            #         Q(client__code__iregex=term)|
-            #         Q(total__iregex=term)
-            #     )
             q_objects &= (
                 Q(client__name__iregex=term)|
                 Q(client__city__iregex=term)|
@@ -8243,43 +8215,10 @@ def loadlistfc(request):
             bons=Facture.objects.filter(q_objects).filter(isvalid=isvalid, isfarah=isfarah, date__range=[startdate, enddate]).order_by('-facture_no')[start:end]
             total=round(Facture.objects.filter(q_objects).filter(isvalid=isvalid, date__range=[startdate, enddate]).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
             totaltva=round(Facture.objects.filter(q_objects).filter(isvalid=isvalid, date__range=[startdate, enddate]).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
-        # trs=''
-        # for i in bons:
-        #     trs+=f'''
-        #     <tr class="ord {"text-danger" if i.ispaid else ''}
-        #      fc-row"
-        #         style="color:{"blue" if i.bon else ""} "
-        #       year={year} term={term} orderid="{i.id}" ondblclick="ajaxpage('bonl{i.id}', 'Facture {i.facture_no}', '/products/facturedetails/{i.id}')">
-        #         <td>{ i.facture_no }</td>
-        #         <td>{ i.date.strftime("%d/%m/%Y")}</td>
-        #         <td>{ i.total}</td>
-        #         <td>{ i.tva}</td>
-        #         <td>{ i.client.name }</td>
-        #         <td>{ i.client.code }</td>
-        #         <td>{ i.client.region}</td>
-        #         <td>{ i.client.city}</td>
-        #         <td>{ i.client.soldfacture}</td>
-        #         <td>{ i.salseman }</td>
-        #         <td class="d-flex justify-content-between">
-        #         <div style="width:15px; height:15px; border-radius:50%; background:{'green' if i.ispaid else 'orange' };" ></div>
-        #         <button title="Facture Comptabilisé" class="btn border border-success" onclick="makefacturecompta(event, '{i.id}')"></button>
-        #         </td>
-        #         <td >
-        #             {i.note}
-        #         </td>
-
-        #         <td>
-        #         {i.bon.bon_no if i.bon else "--"}
-        #         </td>
-        #         <td class="d-flex">
-        #             <i class="bi {"bi-check" if i.isaccount else ''} h3"></i>{"c" if i.isaccount else ''}
-        #             <button title="Imprimer" class="btn btn-sm bi bi-download" onclick="printfacture('{i.id}')"></button>
-        #         </td>
-        #     </tr>
-        #     '''
+        
         
         return JsonResponse({
-            'trs':render(request, 'fclist.html', {'bons':bons}).content.decode('utf-8'),
+            'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':isfarah}).content.decode('utf-8'),
             'has_more': len(bons) == per_page,
             'total':total,
             'totaltva':totaltva,
@@ -8292,43 +8231,9 @@ def loadlistfc(request):
         bons=Facture.objects.filter(isvalid=isvalid, isfarah=isfarah, date__range=[startdate, enddate]).order_by('-facture_no')[start:end]
         total=round(Facture.objects.filter(isvalid=isvalid, date__range=[startdate, enddate]).order_by('-facture_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
         totaltva=round(Facture.objects.filter(isvalid=isvalid, date__range=[startdate, enddate]).order_by('-facture_no').aggregate(Sum('tva'))['tva__sum'] or 0, 2)
-        # trs=''
-        # for i in bons:
-        #     trs+=f'''
-        #     <tr class="ord {"text-danger" if i.ispaid else ''}
-        #      fc-row"
-        #         style="color:{"blue" if i.bon else ""} "
-        #       startdate={startdate} enddate={enddate} orderid="{i.id}" ondblclick="ajaxpage('bonl{i.id}', 'Facture {i.facture_no}', '/products/facturedetails/{i.id}')">
-        #         <td>{ i.facture_no }</td>
-        #         <td>{ i.date.strftime("%d/%m/%Y")}</td>
-        #         <td>{ i.total}</td>
-        #         <td>{ i.tva}</td>
-        #         <td>{ i.client.name }</td>
-        #         <td>{ i.client.code }</td>
-        #         <td>{ i.client.region}</td>
-        #         <td>{ i.client.city}</td>
-        #         <td>{ i.client.soldfacture:.2f}</td>
-        #         <td>{ i.salseman }</td>
-        #         <td class="d-flex justify-content-between">
-        #         <div style="width:15px; height:15px; border-radius:50%; background:{'green' if i.ispaid else 'orange' };" ></div>
-        #         <button title="Facture Comptabilisé" class="btn border border-success" onclick="makefacturecompta(event, '{i.id}')"></button>
-        #         </td>
-        #         <td>
-        #             {i.note}
-        #         </td>
-
-        #         <td>
-        #         {i.bon.bon_no if i.bon else "--"}
-        #         </td>
-        #         <td class="d-flex">
-        #             <i class="bi {"bi-check" if i.isaccount else ''} h3"></i>{"c" if i.isaccount else ''}
-        #             <button title="Imprimer" class="btn btn-sm bi bi-download" onclick="printfacture('{i.id}')"></button>
-        #         </td>
-        #     </tr>
-        #     '''
         
         return JsonResponse({
-            'trs':render(request, 'fclist.html', {'bons':bons}).content.decode('utf-8'),
+            'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':isfarah}).content.decode('utf-8'),
             'has_more': len(bons) == per_page,
             'total':total,
             'totaltva':totaltva,
@@ -8370,7 +8275,7 @@ def loadlistfc(request):
     #     '''
     
     return JsonResponse({
-        'trs':render(request, 'fclist.html', {'bons':bons}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':isfarah}).content.decode('utf-8'),
         'has_more': len(bons) == per_page,
         'total':total,
         'totaltva':totaltva,
@@ -8433,7 +8338,7 @@ def searchforlistfc(request):
     #     total=round(Facture.objects.filter(q_objects).filter(date__year=year).aggregate(Sum('total'))['total__sum'] or 0, 2)
 
     return JsonResponse({
-        'trs':render(request, 'fclist.html', {'bons':bons, 'target':target}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':target=='f'}).content.decode('utf-8'),
         'total':total,
         'target':target
     })
@@ -8734,7 +8639,7 @@ def yeardatafc(request):
     
     return JsonResponse({
         # 'trs':trs,
-        'trs':render(request, 'fclist.html', {'bons':bls}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bls, 'isfarah':target=='f'}).content.decode('utf-8'),
         'total':round(bls.aggregate(Sum('total'))['total__sum'] or 0, 2)
     })
 
