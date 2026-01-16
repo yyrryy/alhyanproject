@@ -8338,7 +8338,7 @@ def searchforlistfc(request):
     #     total=round(Facture.objects.filter(q_objects).filter(date__year=year).aggregate(Sum('total'))['total__sum'] or 0, 2)
 
     return JsonResponse({
-        'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':target=='f'}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bons, 'isfarah':target=='f', 'target':target}).content.decode('utf-8'),
         'total':total,
         'target':target
     })
@@ -8639,7 +8639,7 @@ def yeardatafc(request):
     
     return JsonResponse({
         # 'trs':trs,
-        'trs':render(request, 'fclist.html', {'bons':bls, 'isfarah':target=='f'}).content.decode('utf-8'),
+        'trs':render(request, 'fclist.html', {'bons':bls, 'isfarah':target=='f', "target":target}).content.decode('utf-8'),
         'total':round(bls.aggregate(Sum('total'))['total__sum'] or 0, 2)
     })
 
