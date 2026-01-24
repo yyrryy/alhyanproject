@@ -8742,6 +8742,7 @@ def loadclients(request):
 
 def exportproducts(request):
     categoryid=request.GET.get('categoryid')
+    isfarah=request.GET.get('target')=='f'
     if categoryid=='0':
         products=Produit.objects.all()
         filename='Produit_tous'+today.strftime('%d/%m/%y')+'.xlsx'
@@ -8758,15 +8759,19 @@ def exportproducts(request):
     ws = wb.active
 
     # Write column headers
-    ws.append(['ref', 'name', 'category', 'buyprice', 'sellprice', 'remise', 'prixnet', 'stocktotal', 'stockfacture', 'mark', 'diametre', 'block', 'equivalent', 'refeq1', 'refeq2'])
+    ws.append(['ref', 'name', 'category', 'buyprice', 'sellprice', 'remise', 'prixnet', 'stocktotal', 'mark', 'diametre', 'block', 'equivalent', 'refeq1', 'refeq2'])
 
     # Write product data
     for product in products:
+        if isfarah:
+            stock=product.stocktotalfarah
+        else:
+            stock=product.stocktotalorgh
         ws.append([
             product.ref, product.name,
             product.category.name if product.category else '',  # Extract category name
             product.buyprice, product.sellprice,
-            product.remise, product.prixnet, product.stocktotal, product.stockfacture, product.mark.name if product.mark else '',
+            product.remise1, product.prixnet, stock, product.mark.name if product.mark else '',
             product.diametre, product.block, product.equivalent, product.refeq1, product.refeq2
         ])
 
