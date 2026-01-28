@@ -3150,6 +3150,9 @@ def stockgeneral(request):
             total_coutstock = round(total_coutstock, 2)
             total_coutstockttc = round(total_coutstockttc, 2)
     else:
+        data=[]
+        totalgeneral=0
+        products=Produit.objects.filter(stocktotalfarah__gt=0)
         # for i in products:
         #     stock_needed = i.stocktotalorgh  # The quantity of stock needed
         #     print('>> stock needed', stock_needed, i.ref)
@@ -3208,6 +3211,7 @@ def stockgeneral(request):
         #         'coutmoyen':coutmoyen,
         #         'totalstock':totalstock
         #     })
+        
     
     return render(request, 'stockgeneral.html', {'products':products, 'totalgeneral':totalgeneral, 'target':target, 'errorref':errorref, 'lenproducts':len(products), 'total_coutstock':total_coutstock, 'total_coutstockttc':total_coutstockttc})
     # return render(request, 'stockgeneral.html', {'products':data, 'totalgeneral':totalgeneral, 'target':target, 'errorref':errorref})
