@@ -244,6 +244,18 @@ class Produit(models.Model):
             "coutstock": coutstock,
             "coutstockttc": coutstockttc,
         }
+    def coutmoyenfarah(self):
+        stock = self.stocktotalfarah
+        cout = round(stock*self.buyprice, 2)
+        coutttc=round(cout/1.2, 2)
+        coutstock=round(cout*self.stocktotalfarah, 2)
+        coutstockttc=round(coutttc*self.stocktotalfarah, 2)
+        return {
+            "cout": cout,
+            "coutttc": coutttc,
+            "coutstock": coutstock,
+            "coutstockttc": coutstockttc,
+        }
 # cupppon codes table
 
 
