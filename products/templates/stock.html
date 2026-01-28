@@ -232,7 +232,7 @@
   }
   function exportcategory(){
     let categoryid = $('select[name="exportcategory"]').val();
-    let url = '/products/exportproducts?categoryid=' + categoryid;
+    let url = '/products/exportproducts?target={{target}}&categoryid=' + categoryid;
 
     // Create a hidden iframe to trigger the file download
     var iframe = $('<iframe>', {
