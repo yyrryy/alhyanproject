@@ -3144,7 +3144,7 @@ def stockgeneral(request):
         total_coutstock = 0.0
         total_coutstockttc = 0.0
         for i in products:
-            data = i.coutmoyenorgh()
+            data = i.coutmoyenfarah()
             total_coutstock += data["coutstock"]
             total_coutstockttc += data["coutstockttc"]
             total_coutstock = round(total_coutstock, 2)
