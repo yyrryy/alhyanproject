@@ -220,6 +220,33 @@ class Produit(models.Model):
             return json.loads(self.cars)
         except:
             return []
+    def qtyachat(self):
+        achats=Stockin.objects.filter(product=self, isavoir=False, isfarah=True).aggregate(Sum('quantity'))['quantity__sum'] or 0
+        return achats
+    def avoirachat(self):
+        return Returnedsupplier.objects.filter(product=self, isfarah=True).aggregate(Sum('qty'))['qty__sum'] or 0
+    def qtyventes(self):
+        return Livraisonitem.objects.filter(product=self, bon__isfarah=True).aggregate(Sum('qty'))['qty__sum'] or 0
+    def avoirventes(self):
+            return Stockin.objects.filter(
+                avoir__isnull=False,
+                isfarah=True
+            ).aggregate(Sum('quantity'))['quantity__sum']
+    def coutmoyenorgh(self):
+        stock = self.stocktotalfarah
+        cout = round(stock*self.buyprice, 2)
+        coutttc=round(cout/1.2, 2)
+        coutstock=round(cout*self.stocktotalfarah, 2)
+        coutstockttc=round(coutttc*self.stocktotalfarah, 2)
+        return {
+            "cout": cout,
+            "coutttc": coutttc,
+            "coutstock": coutstock,
+            "coutstockttc": coutstockttc,
+        }
+# cupppon codes table
+
+
     # brand=models.CharField(max_length=25, default=None)
     # model=models.CharField(max_length=25, default=None)
     # mark=models.CharField(max_length=25, default=None)
