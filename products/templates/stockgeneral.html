@@ -22,11 +22,9 @@
                 <th>qty ventes</th>
                 <th>avoir client</th> -->
                 <th>Stock</th>
-                <th>Prix achat HT</th>
-                <th>TVA</th>
-                <th>Prix achat TTC</th>
-                <th>Valeur HT</th>
-                <th>Valeur TTC</th>
+                <th>Prix achat</th>
+                
+                <th>total</th>
             </tr>
         </thead>
         <tbody>
@@ -42,33 +40,12 @@
                     <td>{{product.qtyventes}}</td>
                     <td>{{product.avoirventes}}</td> -->
                     <td>{% if target == "f" %}{{product.stocktotalfarah}}{%else%} {{product.stocktotalorgh}} {%endif%}</td>
+                    <td>{% if target == "f" %}{{product.frbuyprice}}{%else%} {{product.buyprice}} {%endif%}</td>
                     {% with cm=product.coutmoyenfarah %}
-                    <td>
-                        {% if target == "f" %}
-                            {{ cm.coutttc }}
-                        {% else %}
-                            {{ cm.coutttc }}
-                        {% endif %}
-                    </td>
-                    <td>20%</td>
-                    <td>{% if target == "f" %}{{ cm.cout}}{%else%} {{ cm.cout}} {%endif%}</td>
-
-                    
-                    <td>
-                        {% if target == "f" %}
-                        {{ cm.coutstockttc }}
-                        {% else %}
-                        {{ cm.coutstockttc }}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if target == "f" %}
+                        <td>
                             {{ cm.coutstock }}
-                        {% else %}
-                            {{ cm.coutstock }}
-                        {% endif %}
-                    </td>
-                {% endwith %}
+                        </td>
+                    {% endwith %}
 
                     
                 </tr>
@@ -81,9 +58,6 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th>{{total_coutstockttc}}</th>
                 <th>{{total_coutstock}}</th>
             </tr>
         </thead>
