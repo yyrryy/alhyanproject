@@ -246,9 +246,9 @@ class Produit(models.Model):
         }
     def coutmoyenfarah(self):
         stock = self.stocktotalfarah
-        cout = round(stock*self.frbuyprice, 2)
+        cout = round(stock*self.frnetbuyprice, 2)
         coutttc=round(cout/1.2, 2)
-        coutstock=round(self.frbuyprice*self.stocktotalfarah, 2)
+        coutstock=round(self.frnetbuyprice*self.stocktotalfarah, 2)
         coutstockttc=round(coutttc*self.stocktotalfarah, 2)
         return {
             "cout": cout,
