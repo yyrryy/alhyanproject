@@ -2404,7 +2404,7 @@ def printbarcode(request):
     supplierid=request.GET.get('supplierid')
     bonid=request.GET.get('bonid')
     bon=Itemsbysupplier.objects.get(pk=bonid)
-    products=Stockin.objects.filter(bon=bon)
+    products=Stockin.objects.filter(nbon=bon)
     suppliercode=Supplier.objects.get(pk=supplierid).code
     date=request.GET.get('date')
     date=datetime.strptime(date, '%Y-%m-%d').strftime('%d/%m/%y')
