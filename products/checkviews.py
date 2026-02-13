@@ -2423,7 +2423,7 @@ def printbarcode(request):
         net=float(price)-(float(price)*int(remise1)/100)
         price=round(net*2, 2)
         #price=str(price).replace('.', '')
-        qty=float(i.qty)
+        qty=float(i.quantity)
         # # List to hold the barcodes in base64 format
         
         # Generate barcodes for the specified quantity
