@@ -2400,8 +2400,11 @@ def validation(request):
     return render(request, 'validation.html', ctx)
 
 def printbarcode(request):
-    products=json.loads(request.GET.get('products'))
+    # products=json.loads(request.GET.get('products'))
     supplierid=request.GET.get('supplierid')
+    bonid=request.GET.get('bonid')
+    bon=Itemsbysupplier.objects.get(pk=bonid)
+    products=Stockin.objects.filter(bon=bon)
     suppliercode=Supplier.objects.get(pk=supplierid).code
     date=request.GET.get('date')
     date=datetime.strptime(date, '%Y-%m-%d').strftime('%d/%m/%y')
@@ -2414,13 +2417,13 @@ def printbarcode(request):
         else:
             ref=i['ref'].strip()
         print('>>> ref', ref)
-        name=i['name']
-        remise1=0 if i['remise1']=='' else float(i['remise1'])
-        price=i['price']
+        name=i.product.name
+        remise1=i.remise1
+        price=i.price
         net=float(price)-(float(price)*int(remise1)/100)
         price=round(net*2, 2)
         #price=str(price).replace('.', '')
-        qty=float(i['qty'])
+        qty=float(i.qty)
         # # List to hold the barcodes in base64 format
         
         # Generate barcodes for the specified quantity

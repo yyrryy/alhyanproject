@@ -248,7 +248,8 @@
         products.push(product)
       })
       console.log(products)
-    var myWindow = window.open('http://'+window.location.href.split( '/' )[2]+'/products/printbarcode?target={{target}}&products='+JSON.stringify(products)+'&supplierid='+supplierid+'&date='+datebonachat, '', 'width=900,height=900');
+    // var myWindow = window.open('http://'+window.location.href.split( '/' )[2]+'/products/printbarcode?bonid={{bon.id}}&target={{target}}&products='+JSON.stringify(products)+'&supplierid='+supplierid+'&date='+datebonachat, '', 'width=900,height=900');
+    var myWindow = window.open('http://'+window.location.href.split( '/' )[2]+'/products/printbarcode?bonid={{bon.id}}&supplierid='+supplierid+'&date='+datebonachat, '', 'width=900,height=900');
 
     myWindow.focus();
 
