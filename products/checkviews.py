@@ -2413,9 +2413,9 @@ def printbarcode(request):
     barcodes = []
     for i in products:
         if isfarah:
-            ref='S1-'+i['ref'].strip()
+            ref='S1-'+i.product.ref.strip()
         else:
-            ref=i['ref'].strip()
+            ref=i.product.ref.strip()
         print('>>> ref', ref)
         name=i.product.name
         remise1=i.remise1
