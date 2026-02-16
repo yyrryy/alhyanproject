@@ -11681,3 +11681,12 @@ def reglsituation(request):
     return JsonResponse({
         'success':True
     })
+def saveqtybar(request):
+    stockinid=request.GET.get('stockinid')
+    qty=request.GET.get('qty')
+    st=Stockin.objects.get(pk=stockinid)
+    st.qtybar=qty
+    st.save()
+    return JsonResponse({
+        'success':True
+    })

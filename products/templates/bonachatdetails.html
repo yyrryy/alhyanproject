@@ -141,7 +141,7 @@
                   
               </td>
               <td class="text-center qty d-flex">
-                  <input type="number" class="qtybarcode me-5" style="width: 3em;">
+                  <input type="number" class="qtybarcode me-5" style="width: 3em;" onchange="saveqtybar(event, '{{v.id}}')" value="{{v.qtybar}}">
 
                   {{v.quantity}}
                   
@@ -291,5 +291,10 @@
          document.body.innerHTML = originalContents;
          $('body').removeClass('d-flex flex-column vh-100 p-3')
          $('body').css('font-size', '')
+    }
+    // stockinid and save the qty of barcode, to use it u=instead of printin qty
+    function saveqtybar(event, stockinid){
+    qty = $(event.target).val()
+      $.get("/products/saveqtybar", {'stockinid':stockinid, 'qty':qty})
     }
   </script>

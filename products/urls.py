@@ -316,6 +316,7 @@ urlpatterns = [
     path('refusedreglsupp', views.refusedreglsupp, name='refusedreglsupp'),
     path('reglsituation', views.reglsituation, name='reglsituation'),
     path('searchforlistfcachat', views.searchforlistfcachat, name='searchforlistfcachat'),
+    path('saveqtybar', views.saveqtybar, name='saveqtybar'),
     # path('makebondelivered', views.makebondelivered, name='makebondelivered'),
     # path('makebondelivered', views.makebondelivered, name='makebondelivered'),
     # path('makebondelivered', views.makebondelivered, name='makebondelivered'),
@@ -427,8 +428,6 @@ urlpatterns = [
     path('facturemanual', checkviews.facturemanual, name='facturemanual'),
     path('reglererbulk', checkviews.reglererbulk, name='reglererbulk'),
     path('updatefacturenumero', checkviews.updatefacturenumero, name='updatefacturenumero'),
-    
-    # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),
     # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),
     # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),
     # path('checkfactureno', checkviews.checkfactureno, name='checkfactureno'),
