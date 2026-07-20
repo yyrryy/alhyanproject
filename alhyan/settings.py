@@ -85,7 +85,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'alhyan.wsgi.application'
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://alhyan.adachisystem.com",
+    "alhyan.adachisystem.com",
+]
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 usesqlite = os.getenv('DEBUG')=='True' or os.getenv('HOME')=='/home/aaliali'
