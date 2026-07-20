@@ -39,7 +39,7 @@ def get_local_ip():
         s.close()
     return ip
 ip=get_local_ip()
-ALLOWED_HOSTS = ['192.168.0.102', 'localhost', ip]
+ALLOWED_HOSTS = ['192.168.0.102', 'localhost', ip, "alhyan.adachisystem.com"]
 
 
 # Application definition
